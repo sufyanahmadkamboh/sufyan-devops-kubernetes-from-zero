@@ -1,0 +1,7 @@
+curl -fsSLO "https://dl.k8s.io/release/v1.37.1/bin/linux/amd64/kubectl"
+sudo install -m 0755 kubectl /usr/local/bin/kubectl && rm kubectl
+kubectl version --client
+---
+Client Version: v1.37.1
+Kustomize Version: v5.8.1
+# exit 0

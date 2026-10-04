@@ -1,0 +1,4 @@
+kubectl set resources deployment hungry --requests=cpu=300m,memory=128Mi
+---
+deployment.apps/hungry resource requirements updated
+# exit 0

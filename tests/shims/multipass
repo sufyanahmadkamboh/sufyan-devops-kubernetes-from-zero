@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# CI only: a tiny stand-in for Multipass on GitHub's Ubuntu machines, where the lab VMs are LXD virtual machines.
+# It understands exactly the multipass commands the lessons use. Learners use the real Multipass.
+set -euo pipefail
+cmd="${1:-}"; shift || true
+case "$cmd" in
+  launch)
+    image=24.04 name='' cpus=1 mem=1G disk=5G
+    while [ $# -gt 0 ]; do
+      case "$1" in
+        --name|-n) name=$2; shift 2 ;; --cpus|-c) cpus=$2; shift 2 ;;
+        --memory|-m) mem=$2; shift 2 ;; --disk|-d) disk=$2; shift 2 ;;
+        *) image=$1; shift ;;
+      esac
+    done
+    sudo lxc launch "ubuntu:$image" "$name" --vm -c limits.cpu="$cpus" -c limits.memory="${mem}iB" -d root,size="${disk}iB" >/dev/null
+    for _ in $(seq 1 90); do
+      if sudo lxc exec "$name" -- cloud-init status 2>/dev/null | grep -q "status: done"; then break; fi
+      sleep 3
+    done
+    echo "Launched: $name" ;;
+  exec)
+    name=$1; shift; [ "${1:-}" = "--" ] && shift
+    # like Multipass: run as the "ubuntu" user, with a login environment (fresh group membership every time)
+    # stdin (a script piped in by the test runner or by the lessons) is passed through unchanged
+    sudo lxc exec "$name" -- sudo -iu ubuntu "$@" ;;
+  list)
+    printf '%-14s%-11s%-17s%s\n' Name State IPv4 Image
+    # the VM's primary address is the first one `hostname -I` prints (LXD's own list also shows CNI interfaces)
+    sudo lxc list --format csv -c n,s | while IFS=, read -r n s; do
+      ip=$(sudo lxc exec "$n" -- hostname -I 2>/dev/null </dev/null | awk '{print $1}')
+      printf '%-14s%-11s%-17s%s\n' "$n" "${s^}" "${ip:--}" "Ubuntu 24.04 LTS"; done ;;
+  info)
+    name=$1
+    ip=$(sudo lxc exec "$name" -- hostname -I </dev/null | awk '{print $1}')
+    printf 'Name:           %s\nState:          Running\nIPv4:           %s\nRelease:        Ubuntu 24.04 LTS\n' "$name" "$ip" ;;
+  stop) for n in "$@"; do sudo lxc stop "$n"; done ;;
+  start) for n in "$@"; do sudo lxc start "$n"; for _ in $(seq 1 60); do sudo lxc exec "$n" -- true 2>/dev/null && break; sleep 2; done; done ;;
+  delete) for n in "$@"; do [ "$n" = --purge ] || sudo lxc delete --force "$n"; done ;;
+  purge) : ;;
+  version) echo "multipass (CI shim on LXD)" ;;
+  *) echo "multipass shim: unsupported command '$cmd'" >&2; exit 2 ;;
+esac

@@ -1,0 +1,10 @@
+# on k8s-cp+k8s-worker
+timedatectl | grep -E 'synchronized|NTP service'
+---
+[k8s-cp]
+System clock synchronized: yes
+              NTP service: active
+[k8s-worker]
+System clock synchronized: yes
+              NTP service: active
+# exit 0

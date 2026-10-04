@@ -1,0 +1,22 @@
+kubectl rollout status deployment/web --timeout=60s
+kubectl get pods -l app=web -o wide
+kubectl get endpoints web
+kubectl get service web
+---
+Waiting for deployment "web" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "web" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "web" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "web" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "web" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "web" rollout to finish: 1 old replicas are pending termination...
+deployment "web" successfully rolled out
+NAME                   READY   STATUS        RESTARTS      AGE     IP           NODE       NOMINATED NODE   READINESS GATES
+web-6f5d6d9c94-jt5d6   1/1     Terminating   1 (74s ago)   3m34s   10.244.0.4   minikube   <none>           <none>
+web-757f68ddf5-bc6d4   1/1     Running       0             6s      10.244.0.8   minikube   <none>           <none>
+web-757f68ddf5-bhm4l   1/1     Running       0             12s     10.244.0.7   minikube   <none>           <none>
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME   ENDPOINTS                     AGE
+web    10.244.0.7:80,10.244.0.8:80   3m34s
+NAME   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+web    NodePort   10.99.103.237   <none>        80:30080/TCP   3m34s
+# exit 0

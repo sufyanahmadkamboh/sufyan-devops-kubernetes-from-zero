@@ -1,0 +1,6 @@
+# on k8s-micro
+NODE_PORT=$(kubectl get service web -o jsonpath='{.spec.ports[0].nodePort}')
+curl -s "http://127.0.0.1:$NODE_PORT" | grep -o '<title>.*</title>'
+---
+<title>Welcome to nginx!</title>
+# exit 0

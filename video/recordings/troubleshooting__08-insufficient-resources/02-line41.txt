@@ -1,0 +1,5 @@
+minikube delete -p tiny
+---
+! "tiny" profile does not exist, trying anyways.
+* Removed all traces of the "tiny" cluster.
+# exit 0

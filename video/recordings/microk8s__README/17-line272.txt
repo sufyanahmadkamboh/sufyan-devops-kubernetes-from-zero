@@ -1,0 +1,6 @@
+# on k8s-micro
+microk8s stop
+---
+Stopped.
+Stopped.
+# exit 0

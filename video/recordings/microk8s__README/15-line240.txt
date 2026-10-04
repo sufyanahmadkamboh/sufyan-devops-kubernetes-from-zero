@@ -1,0 +1,13 @@
+# on k8s-micro
+kubectl rollout status deployment/web --timeout=10s
+kubectl get deployment,service web
+---
+Waiting for deployment "web" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web" successfully rolled out
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web   2/2     2            2           4s
+
+NAME          TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/web   NodePort   10.152.183.178   <none>        80:30398/TCP   4s
+# exit 0

@@ -1,0 +1,15 @@
+kubectl get node minikube -o jsonpath='Allocatable: cpu={.status.allocatable.cpu} memory={.status.allocatable.memory}{"\n"}'
+kubectl describe node minikube | sed -n '/Allocated resources:/,/Events:/p'
+---
+Allocatable: cpu=4 memory=16372440Ki
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests    Limits
+  --------           --------    ------
+  cpu                950m (23%)  100m (2%)
+  memory             420Mi (2%)  220Mi (1%)
+  ephemeral-storage  0 (0%)      0 (0%)
+  hugepages-1Gi      0 (0%)      0 (0%)
+  hugepages-2Mi      0 (0%)      0 (0%)
+Events:
+# exit 0

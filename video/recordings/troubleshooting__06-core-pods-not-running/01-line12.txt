@@ -1,0 +1,5 @@
+# on k8s-cp
+kubectl -n kube-system get configmap coredns -o yaml | grep -v '^  resourceVersion:' > coredns-backup.yaml
+---
+
+# exit 0

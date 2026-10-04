@@ -1,0 +1,10 @@
+aws eks describe-cluster --name k8s-from-zero --query 'cluster.{status:status,version:version,platform:platformVersion}' --output table
+---
+-----------------------------------
+|         DescribeCluster         |
++----------+----------+-----------+
+| platform | status   |  version  |
++----------+----------+-----------+
+|  eks.4   |  ACTIVE  |  1.37     |
++----------+----------+-----------+
+# exit 0

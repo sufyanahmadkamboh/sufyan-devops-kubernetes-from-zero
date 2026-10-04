@@ -1,0 +1,6 @@
+kubectl rollout status deployment web --timeout=10s
+---
+Waiting for deployment "web" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web" successfully rolled out
+# exit 0

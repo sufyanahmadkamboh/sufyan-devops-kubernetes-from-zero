@@ -1,0 +1,4 @@
+kubectl config current-context
+---
+minikube
+# exit 0

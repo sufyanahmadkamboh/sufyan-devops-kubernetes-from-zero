@@ -1,0 +1,7 @@
+# on k8s-worker
+sudo journalctl -u kubelet --no-pager --since "-2min" | grep -m 3 'containerd.sock'
+---
+Oct 04 14:52:24 k8s-worker kubelet[3956]: W1004 14:52:24.281294    3956 logging.go:55] [core] [Channel #1 SubChannel #2] grpc: addrConn.createTransport failed to connect to {Addr: "/var/run/containerd/containerd.sock", ServerName: "localhost", }. Err: connection error: desc = "transport: Error while dialing: dial unix /var/run/containerd/containerd.sock: connect: no such file or directory"
+Oct 04 14:52:24 k8s-worker kubelet[3956]: E1004 14:52:24.281445    3956 remote_runtime.go:435] "ListPodSandbox with filter from runtime service failed" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /var/run/containerd/containerd.sock: connect: no such file or directory\"" filter=""
+Oct 04 14:52:24 k8s-worker kubelet[3956]: E1004 14:52:24.281561    3956 generic.go:308] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /var/run/containerd/containerd.sock: connect: no such file or directory\""
+# exit 0

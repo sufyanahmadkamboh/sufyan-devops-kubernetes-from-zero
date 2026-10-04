@@ -1,0 +1,13 @@
+# on k8s-cp
+kubectl get pods -A
+---
+NAMESPACE      NAME                             READY   STATUS    RESTARTS   AGE
+kube-flannel   kube-flannel-ds-42g26            1/1     Running   0          22s
+kube-system    coredns-559f6c778d-94jqc         1/1     Running   0          24s
+kube-system    coredns-559f6c778d-gpbqb         1/1     Running   0          24s
+kube-system    etcd-k8s-cp                      1/1     Running   0          30s
+kube-system    kube-apiserver-k8s-cp            1/1     Running   0          30s
+kube-system    kube-controller-manager-k8s-cp   1/1     Running   0          30s
+kube-system    kube-proxy-9kw2g                 1/1     Running   0          25s
+kube-system    kube-scheduler-k8s-cp            1/1     Running   0          31s
+# exit 0

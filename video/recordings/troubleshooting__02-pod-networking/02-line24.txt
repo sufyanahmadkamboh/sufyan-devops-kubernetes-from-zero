@@ -1,0 +1,5 @@
+# on k8s-worker
+sudo sysctl -w net.ipv4.ip_forward=0
+---
+net.ipv4.ip_forward = 0
+# exit 0

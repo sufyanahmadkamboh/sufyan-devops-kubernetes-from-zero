@@ -1,0 +1,6 @@
+kubectl delete service web
+kubectl delete deployment web
+---
+service "web" deleted from default namespace
+deployment.apps "web" deleted from default namespace
+# exit 0

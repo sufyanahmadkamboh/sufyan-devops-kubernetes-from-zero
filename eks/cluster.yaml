@@ -1,0 +1,46 @@
+# Amazon EKS lab cluster, created and deleted with eksctl:
+#   eksctl create cluster -f eks/cluster.yaml
+#   eksctl delete cluster -f eks/cluster.yaml --wait
+#
+# Cost (eu-central-1, on-demand, approximate): EKS control plane ~$0.10/h, 2 x t3.medium ~$0.10/h,
+# NAT gateway ~$0.05/h + data, public IPv4 addresses and 2 x 20 GB gp3 volumes a few cents per hour.
+# Roughly $0.25-0.30 per hour while it exists. Delete it the same day.
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: k8s-from-zero
+  region: eu-central-1
+  version: "1.37"
+  tags:
+    Project: k8s-from-zero
+    Owner: sufyan
+    ManagedBy: eksctl
+
+# eksctl creates a new VPC with a public and a private subnet in each of three availability zones.
+vpc:
+  cidr: 10.50.0.0/16
+  nat:
+    gateway: Single          # one NAT gateway is enough for a lab (production: one per availability zone)
+  clusterEndpoints:
+    publicAccess: true       # kubectl from your computer
+    privateAccess: true      # nodes reach the API server inside the VPC
+
+# who may use the cluster: EKS access entries (the creator gets cluster-admin automatically)
+accessConfig:
+  authenticationMode: API
+
+managedNodeGroups:
+  - name: workers
+    instanceType: t3.medium  # 2 vCPU, 4 GiB
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 2
+    volumeSize: 20
+    volumeType: gp3
+    privateNetworking: true  # nodes get no public IP; they reach the internet through the NAT gateway
+    labels:
+      role: worker
+    tags:
+      Project: k8s-from-zero
+      Owner: sufyan

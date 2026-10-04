@@ -1,0 +1,5 @@
+# on k8s-worker
+sudo systemctl stop kubelet
+---
+
+# exit 0

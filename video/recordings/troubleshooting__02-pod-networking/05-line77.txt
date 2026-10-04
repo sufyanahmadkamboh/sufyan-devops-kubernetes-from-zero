@@ -1,0 +1,5 @@
+# on k8s-cp
+kubectl exec deploy/web -- wget -qO- http://127.0.0.1 | grep -o '<title>.*</title>'
+---
+<title>Welcome to nginx!</title>
+# exit 0

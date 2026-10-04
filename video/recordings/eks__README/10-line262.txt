@@ -1,0 +1,12 @@
+kubectl get pods -A
+---
+NAMESPACE     NAME                              READY   STATUS              RESTARTS   AGE
+kube-system   aws-node-68mqd                    2/2     Running             0          64s
+kube-system   aws-node-tdb5w                    2/2     Running             0          62s
+kube-system   coredns-c7b948bf9-5z9n5           1/1     Running             0          4m23s
+kube-system   coredns-c7b948bf9-8x7ss           1/1     Running             0          4m23s
+kube-system   kube-proxy-cn9pb                  1/1     Running             0          62s
+kube-system   kube-proxy-wgxks                  1/1     Running             0          64s
+kube-system   metrics-server-7584d9c877-dnjfp   0/1     ContainerCreating   0          0s
+kube-system   metrics-server-7584d9c877-nt295   0/1     ContainerCreating   0          0s
+# exit 0

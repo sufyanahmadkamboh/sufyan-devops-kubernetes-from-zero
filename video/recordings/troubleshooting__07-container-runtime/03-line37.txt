@@ -1,0 +1,5 @@
+# on k8s-cp
+kubectl describe node k8s-worker | grep -E '^\s+Ready\s'
+---
+  Ready                False   Sun, 04 Oct 2026 14:52:57 +0000   Sun, 04 Oct 2026 14:52:57 +0000   KubeletNotReady              container runtime is down
+# exit 0

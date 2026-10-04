@@ -1,0 +1,8 @@
+# on k8s-cp
+kubectl describe node k8s-worker | grep -A3 Taints
+---
+Taints:             <none>
+Unschedulable:      false
+Lease:
+  HolderIdentity:  k8s-worker
+# exit 0

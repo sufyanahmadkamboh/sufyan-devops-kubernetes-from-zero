@@ -1,0 +1,5 @@
+LB=$(kubectl get service web -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+curl -s --max-time 5 "http://$LB" | grep -o '<title>.*</title>'
+---
+<title>Welcome to nginx!</title>
+# exit 0

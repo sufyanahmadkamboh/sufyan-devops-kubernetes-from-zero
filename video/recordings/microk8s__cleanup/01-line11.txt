@@ -1,0 +1,5 @@
+# on k8s-micro
+sudo snap remove microk8s --purge
+---
+microk8s removed
+# exit 0

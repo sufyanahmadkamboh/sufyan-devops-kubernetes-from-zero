@@ -1,0 +1,8 @@
+# on k8s-cp
+kubectl describe node k8s-worker | grep -A3 Taints
+---
+Taints:             node.kubernetes.io/unreachable:NoExecute
+                    node.kubernetes.io/unreachable:NoSchedule
+Unschedulable:      false
+Lease:
+# exit 0

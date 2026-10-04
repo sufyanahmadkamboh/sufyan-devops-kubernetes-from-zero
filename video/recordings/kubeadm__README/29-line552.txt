@@ -1,0 +1,7 @@
+# on k8s-cp
+kubectl create deployment web --image=nginx:1.30-alpine --replicas=2
+kubectl expose deployment web --port=80 --type=NodePort
+---
+deployment.apps/web created
+service/web exposed
+# exit 0

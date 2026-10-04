@@ -1,0 +1,7 @@
+docker ps --filter name=minikube --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
+minikube ip
+---
+NAMES      IMAGE                                 STATUS
+minikube   gcr.io/k8s-minikube/kicbase:v0.0.51   Up 31 seconds
+192.168.49.2
+# exit 0

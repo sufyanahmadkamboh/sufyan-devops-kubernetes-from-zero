@@ -1,0 +1,4 @@
+multipass list
+---
+Name          State      IPv4             Image
+# exit 0

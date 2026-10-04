@@ -1,0 +1,9 @@
+# on k8s-cp
+kubectl drain k8s-lab --ignore-daemonsets --delete-emptydir-data --force --timeout=120s
+kubectl delete node k8s-lab
+---
+node/k8s-lab cordoned
+node/k8s-lab drained
+Warning: ignoring DaemonSet-managed Pods: kube-flannel/kube-flannel-ds-nc8v7, kube-system/kube-proxy-t9m8p
+node "k8s-lab" deleted
+# exit 0

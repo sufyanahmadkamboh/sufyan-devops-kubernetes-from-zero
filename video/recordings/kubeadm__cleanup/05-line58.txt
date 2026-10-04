@@ -1,0 +1,20 @@
+# on k8s-cp
+sudo kubeadm reset -f
+sudo rm -rf /etc/cni/net.d "$HOME/.kube"
+sudo iptables -F && sudo iptables -t nat -F && sudo iptables -t mangle -F && sudo iptables -X
+---
+[reset] Reading configuration from the "kubeadm-config" ConfigMap in namespace "kube-system"...
+[reset] Use 'kubeadm init phase upload-config kubeadm --config your-config-file' to re-upload it.
+[preflight] Running pre-flight checks
+[reset] Deleted contents of the etcd data directory: /var/lib/etcd
+[reset] Stopping the kubelet service
+[reset] Unmounting mounted directories in "/var/lib/kubelet"
+[reset] Deleting contents of directories: [/etc/kubernetes/manifests /var/lib/kubelet /etc/kubernetes/pki]
+[reset] Deleting files: [/etc/kubernetes/admin.conf /etc/kubernetes/super-admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/bootstrap-kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
+
+The reset process does not perform cleanup of CNI plugin configuration,
+network filtering rules and kubeconfig files.
+
+For information on how to perform this cleanup manually, please see:
+    https://k8s.io/docs/reference/setup-tools/kubeadm/kubeadm-reset/
+# exit 0

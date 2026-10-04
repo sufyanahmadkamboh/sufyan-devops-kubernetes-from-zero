@@ -1,0 +1,5 @@
+export AWS_REGION=eu-central-1
+aws sts get-caller-identity --query Arn --output text
+---
+arn:aws:iam::<account-id>:user/<iam-user>
+# exit 0

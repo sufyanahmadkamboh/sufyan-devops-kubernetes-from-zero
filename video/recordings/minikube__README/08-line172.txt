@@ -1,0 +1,12 @@
+kubectl get pods -A
+---
+NAMESPACE     NAME                               READY   STATUS    RESTARTS   AGE
+kube-system   coredns-559f6c778d-vtgvt           1/1     Running   0          14s
+kube-system   etcd-minikube                      1/1     Running   0          20s
+kube-system   kindnet-96zsk                      1/1     Running   0          14s
+kube-system   kube-apiserver-minikube            1/1     Running   0          20s
+kube-system   kube-controller-manager-minikube   1/1     Running   0          20s
+kube-system   kube-proxy-dpftw                   1/1     Running   0          14s
+kube-system   kube-scheduler-minikube            1/1     Running   0          21s
+kube-system   storage-provisioner                1/1     Running   0          19s
+# exit 0

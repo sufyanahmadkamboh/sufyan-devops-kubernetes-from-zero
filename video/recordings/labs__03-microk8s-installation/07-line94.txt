@@ -1,0 +1,5 @@
+# on k8s-micro
+curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: other.local' http://127.0.0.1/
+---
+404
+# exit 0

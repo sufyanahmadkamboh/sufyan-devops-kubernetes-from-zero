@@ -1,0 +1,12 @@
+# on k8s-lab
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+---
+[init] Using Kubernetes version: v1.37.1
+[preflight] Running pre-flight checks
+[preflight] Some fatal errors occurred:
+	[ERROR CRI]: could not connect to the container runtime: failed to create new CRI runtime service: validate service connection: validate CRI v1 runtime API for endpoint "unix:///var/run/containerd/containerd.sock": rpc error: code = Unimplemented desc = unknown service runtime.v1.RuntimeService
+	[ERROR ContainerRuntimeVersion]: could not connect to the container runtime: failed to create new CRI runtime service: validate service connection: validate CRI v1 runtime API for endpoint "unix:///var/run/containerd/containerd.sock": rpc error: code = Unimplemented desc = unknown service runtime.v1.RuntimeService
+[preflight] If you know what you are doing, you can make a check non-fatal with `--ignore-preflight-errors=...`
+error: error execution phase preflight: preflight checks failed
+To see the stack trace of this error execute with --v=5 or higher
+# exit 1

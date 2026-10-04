@@ -1,0 +1,17 @@
+# on k8s-worker
+sudo kubeadm reset -f
+---
+[preflight] Running pre-flight checks
+[reset] Deleted contents of the etcd data directory: /var/lib/etcd
+[reset] Stopping the kubelet service
+W1004 14:56:29.720805    8040 removeetcdmember.go:105] [reset] No kubeadm config, using etcd pod spec to get data directory
+[reset] Unmounting mounted directories in "/var/lib/kubelet"
+[reset] Deleting contents of directories: [/etc/kubernetes/manifests /var/lib/kubelet /etc/kubernetes/pki]
+[reset] Deleting files: [/etc/kubernetes/admin.conf /etc/kubernetes/super-admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/bootstrap-kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
+
+The reset process does not perform cleanup of CNI plugin configuration,
+network filtering rules and kubeconfig files.
+
+For information on how to perform this cleanup manually, please see:
+    https://k8s.io/docs/reference/setup-tools/kubeadm/kubeadm-reset/
+# exit 0

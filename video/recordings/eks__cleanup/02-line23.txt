@@ -1,0 +1,4 @@
+eks/scripts/verify-cleanup.sh | grep 'Load balancers'
+---
+  gone  Load balancers (from Services)
+# exit 0

@@ -1,0 +1,11 @@
+# on k8s-cp+k8s-worker
+containerd --version
+systemctl is-active containerd
+---
+[k8s-cp]
+containerd containerd v2.3.6 ee2735368117d2eb259779949d5e75cdafec9761
+active
+[k8s-worker]
+containerd containerd v2.3.6 ee2735368117d2eb259779949d5e75cdafec9761
+active
+# exit 0

@@ -1,0 +1,9 @@
+# on k8s-cp
+kubectl wait --for=condition=Ready node/k8s-worker --timeout=10s
+kubectl get nodes
+---
+node/k8s-worker condition met
+NAME         STATUS   ROLES           AGE     VERSION
+k8s-cp       Ready    control-plane   7m6s    v1.37.1
+k8s-worker   Ready    worker          6m30s   v1.37.1
+# exit 0

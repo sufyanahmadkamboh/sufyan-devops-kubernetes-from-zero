@@ -1,0 +1,4 @@
+multipass launch 24.04 --name k8s-micro --cpus 2 --memory 4G --disk 20G
+---
+Launched: k8s-micro
+# exit 0

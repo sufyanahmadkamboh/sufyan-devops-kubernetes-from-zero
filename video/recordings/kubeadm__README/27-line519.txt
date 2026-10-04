@@ -1,0 +1,10 @@
+# on k8s-cp
+kubectl get namespaces
+---
+NAME              STATUS   AGE
+default           Active   47s
+kube-flannel      Active   36s
+kube-node-lease   Active   47s
+kube-public       Active   47s
+kube-system       Active   47s
+# exit 0

@@ -1,0 +1,6 @@
+# on k8s-cp
+cp ~/.kube/config /tmp/broken-config
+kubectl config set-cluster kubernetes --server=https://10.255.255.1:6443 --kubeconfig /tmp/broken-config
+---
+Cluster "kubernetes" set.
+# exit 0

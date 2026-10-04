@@ -1,0 +1,8 @@
+# on k8s-cp
+kubeadm version -o short
+kubectl version --client
+---
+v1.37.1
+Client Version: v1.37.1
+Kustomize Version: v5.8.1
+# exit 0

@@ -1,0 +1,6 @@
+# on k8s-worker
+sudo rm -rf /etc/cni/net.d
+sudo iptables -F && sudo iptables -t nat -F && sudo iptables -t mangle -F && sudo iptables -X
+---
+
+# exit 0

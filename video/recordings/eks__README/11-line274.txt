@@ -1,0 +1,5 @@
+eksctl get nodegroup --cluster k8s-from-zero
+---
+CLUSTER		NODEGROUP	STATUS	CREATED			MIN SIZE	MAX SIZE	DESIRED CAPACITY	INSTANCE TYPE	IMAGE ID		ASG NAME						TYPE
+k8s-from-zero	workers		ACTIVE	2026-10-04T13:40:35Z	2		2		2			t3.medium	AL2023_x86_64_STANDARD	eks-workers-a2d08392-8acd-c919-9666-638daba7aa13	managed
+# exit 0

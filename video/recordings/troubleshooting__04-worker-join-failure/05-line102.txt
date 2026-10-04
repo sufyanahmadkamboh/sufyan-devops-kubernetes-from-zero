@@ -1,0 +1,6 @@
+CP_IP=$(multipass info k8s-cp | awk '/IPv4/ {print $2; exit}')
+multipass exec k8s-lab -- sudo iptables -I OUTPUT -p tcp --dport 6443 -j REJECT
+multipass exec k8s-lab -- nc -zv -w 3 "$CP_IP" 6443
+---
+nc: connect to 10.97.7.168 port 6443 (tcp) failed: Connection refused
+# exit 1

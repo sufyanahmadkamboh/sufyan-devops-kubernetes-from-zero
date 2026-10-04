@@ -1,0 +1,4 @@
+multipass launch 24.04 --name k8s-lab --cpus 2 --memory 2G --disk 15G
+---
+Launched: k8s-lab
+# exit 0

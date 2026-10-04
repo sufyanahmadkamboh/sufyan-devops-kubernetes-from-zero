@@ -1,0 +1,14 @@
+# on k8s-cp+k8s-worker
+hostname
+ip -4 -brief address show scope global
+sudo cat /sys/class/dmi/id/product_uuid
+---
+[k8s-cp]
+k8s-cp
+enp5s0           UP             10.97.7.168/24 metric 100 
+775aed78-3f05-47f8-bc8b-11ebd618b50f
+[k8s-worker]
+k8s-worker
+enp5s0           UP             10.97.7.171/24 metric 100 
+5d6a82b0-ba15-4bfe-b0b4-81340689c146
+# exit 0

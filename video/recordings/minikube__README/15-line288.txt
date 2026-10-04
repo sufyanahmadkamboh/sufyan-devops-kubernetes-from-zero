@@ -1,0 +1,9 @@
+minikube addons list | grep -E 'ADDON NAME|dashboard|ingress |metrics-server|storage-provisioner'
+---
+│         ADDON NAME          │ PROFILE  │   STATUS   │               MAINTAINER               │
+│ dashboard                   │ minikube │ disabled   │ Kubernetes                             │
+│ ingress                     │ minikube │ disabled   │ Kubernetes                             │
+│ metrics-server              │ minikube │ disabled   │ Kubernetes                             │
+│ storage-provisioner         │ minikube │ enabled ✅ │ minikube                               │
+│ storage-provisioner-rancher │ minikube │ disabled   │ 3rd party (Rancher)                    │
+# exit 0

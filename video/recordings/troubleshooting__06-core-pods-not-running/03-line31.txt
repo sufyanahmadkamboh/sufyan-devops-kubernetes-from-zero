@@ -1,0 +1,8 @@
+# on k8s-cp
+kubectl get pods -n kube-system -l k8s-app=kube-dns
+---
+NAME                       READY   STATUS             RESTARTS     AGE
+coredns-559f6c778d-gpbqb   1/1     Running            0            5m54s
+coredns-6dbd6d75fb-bz9d8   0/1     CrashLoopBackOff   1 (4s ago)   8s
+coredns-6dbd6d75fb-qcvfq   0/1     CrashLoopBackOff   1 (3s ago)   8s
+# exit 0

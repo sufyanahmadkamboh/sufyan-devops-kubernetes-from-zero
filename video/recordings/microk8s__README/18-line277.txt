@@ -1,0 +1,5 @@
+# on k8s-micro
+microk8s status
+---
+microk8s is not running, try microk8s start
+# exit 0

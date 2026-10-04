@@ -1,0 +1,5 @@
+kubectl get deployment web
+---
+NAME   READY   UP-TO-DATE   AVAILABLE   AGE
+web    2/2     2            2           2m28s
+# exit 0

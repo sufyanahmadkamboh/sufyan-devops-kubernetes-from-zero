@@ -1,0 +1,11 @@
+# on k8s-micro
+microk8s status --format short | grep -E 'enabled' | head -8
+---
+core/dns: enabled
+core/ha-cluster: enabled
+core/helm: enabled
+core/helm3: enabled
+core/hostpath-storage: enabled
+core/metrics-server: enabled
+core/storage: enabled
+# exit 0

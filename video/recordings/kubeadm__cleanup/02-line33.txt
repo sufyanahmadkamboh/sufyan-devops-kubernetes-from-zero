@@ -1,0 +1,15 @@
+# on k8s-cp
+kubectl drain k8s-worker --ignore-daemonsets --delete-emptydir-data --force --timeout=120s
+kubectl delete node k8s-worker
+---
+node/k8s-worker cordoned
+Warning: ignoring DaemonSet-managed Pods: kube-flannel/kube-flannel-ds-5mxcw, kube-system/kube-proxy-tz68r
+evicting pod kube-system/coredns-644c598bdd-xt86q
+evicting pod default/web-6f5d6d9c94-2zks8
+evicting pod default/web-6f5d6d9c94-fl5c7
+pod/web-6f5d6d9c94-fl5c7 evicted
+pod/web-6f5d6d9c94-2zks8 evicted
+pod/coredns-644c598bdd-xt86q evicted
+node/k8s-worker drained
+node "k8s-worker" deleted
+# exit 0

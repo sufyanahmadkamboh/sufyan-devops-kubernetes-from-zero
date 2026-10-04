@@ -1,0 +1,41 @@
+# The course's test workload: two nginx replicas with health checks and resource requests.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.30-alpine
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: 50m          # what the scheduler reserves on a node
+              memory: 32Mi
+            limits:
+              memory: 64Mi      # above this the container is OOM-killed
+          readinessProbe:       # only Ready Pods receive traffic from the Service
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:        # the kubelet restarts the container if this keeps failing
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10

@@ -1,0 +1,72 @@
+eksctl create cluster -f eks/cluster.yaml
+---
+2026-10-04 15:28:02 [ℹ]  eksctl version 0.231.0
+2026-10-04 15:28:02 [ℹ]  using region eu-central-1
+2026-10-04 15:28:02 [ℹ]  setting availability zones to [eu-central-1a eu-central-1c eu-central-1b]
+2026-10-04 15:28:02 [ℹ]  subnets for eu-central-1a - public:10.50.0.0/19 private:10.50.96.0/19
+2026-10-04 15:28:02 [ℹ]  subnets for eu-central-1c - public:10.50.32.0/19 private:10.50.128.0/19
+2026-10-04 15:28:02 [ℹ]  subnets for eu-central-1b - public:10.50.64.0/19 private:10.50.160.0/19
+2026-10-04 15:28:02 [ℹ]  nodegroup "workers" will use "" [AmazonLinux2023/1.37]
+2026-10-04 15:28:02 [!]  Auto Mode will be enabled by default in an upcoming release of eksctl. This means managed node groups and managed networking add-ons will no longer be created by default. To maintain current behavior, explicitly set 'autoModeConfig.enabled: false' in your cluster configuration. Learn more: https://eksctl.io/usage/auto-mode/
+2026-10-04 15:28:02 [ℹ]  using Kubernetes version 1.37
+2026-10-04 15:28:02 [ℹ]  creating EKS cluster "k8s-from-zero" in "eu-central-1" region with managed nodes
+2026-10-04 15:28:02 [ℹ]  1 nodegroup (workers) was included (based on the include/exclude rules)
+2026-10-04 15:28:02 [ℹ]  will create a CloudFormation stack for cluster itself and 1 managed nodegroup stack(s)
+2026-10-04 15:28:02 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=eu-central-1 --cluster=k8s-from-zero'
+2026-10-04 15:28:02 [ℹ]  Kubernetes API endpoint access will use provided values {publicAccess=true, privateAccess=true} for cluster "k8s-from-zero" in "eu-central-1"
+2026-10-04 15:28:02 [ℹ]  CloudWatch logging will not be enabled for cluster "k8s-from-zero" in "eu-central-1"
+2026-10-04 15:28:02 [ℹ]  you can enable it with 'eksctl utils update-cluster-logging --enable-types={SPECIFY-YOUR-LOG-TYPES-HERE (e.g. all)} --region=eu-central-1 --cluster=k8s-from-zero'
+2026-10-04 15:28:02 [ℹ]  default addons metrics-server, vpc-cni, kube-proxy, coredns were not specified, will install them as EKS addons
+2026-10-04 15:28:02 [ℹ]  
+2 sequential tasks: { create cluster control plane "k8s-from-zero", 
+    2 sequential sub-tasks: { 
+        2 sequential sub-tasks: { 
+            1 task: { create addons },
+            wait for control plane to become ready,
+        },
+        create managed nodegroup "workers",
+    } 
+}
+2026-10-04 15:28:02 [ℹ]  building cluster stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:28:02 [ℹ]  deploying stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:28:32 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:29:03 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:30:03 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:31:03 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:32:03 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:33:03 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:34:03 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:35:03 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:36:03 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:37:04 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:38:04 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 15:38:05 [!]  recommended policies were found for "vpc-cni" addon, but since OIDC is disabled on the cluster, eksctl cannot configure the requested permissions; the recommended way to provide IAM permissions for "vpc-cni" addon is via pod identity associations; after addon creation is completed, add all recommended policies to the config file, under `addon.PodIdentityAssociations`, and run `eksctl update addon`
+2026-10-04 15:38:05 [ℹ]  creating addon: vpc-cni
+2026-10-04 15:38:05 [ℹ]  successfully created addon: vpc-cni
+2026-10-04 15:38:06 [ℹ]  creating addon: kube-proxy
+2026-10-04 15:38:06 [ℹ]  successfully created addon: kube-proxy
+2026-10-04 15:38:06 [ℹ]  creating addon: coredns
+2026-10-04 15:38:06 [ℹ]  successfully created addon: coredns
+2026-10-04 15:40:07 [ℹ]  building managed nodegroup stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:40:07 [ℹ]  deploying stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:40:07 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:40:37 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:41:29 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:42:28 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:42:28 [ℹ]  waiting for the control plane to become ready
+2026-10-04 15:42:29 [✔]  saved kubeconfig as "~/.kube/config"
+2026-10-04 15:42:29 [ℹ]  no tasks
+2026-10-04 15:42:29 [✔]  all EKS cluster resources for "k8s-from-zero" have been created
+2026-10-04 15:42:29 [ℹ]  nodegroup "workers" has 2 node(s)
+2026-10-04 15:42:29 [ℹ]  node "ip-10-50-110-141.eu-central-1.compute.internal" is ready
+2026-10-04 15:42:29 [ℹ]  node "ip-10-50-151-189.eu-central-1.compute.internal" is ready
+2026-10-04 15:42:29 [ℹ]  waiting for at least 2 node(s) to become ready in "workers"
+2026-10-04 15:42:29 [ℹ]  nodegroup "workers" has 2 node(s)
+2026-10-04 15:42:29 [ℹ]  node "ip-10-50-110-141.eu-central-1.compute.internal" is ready
+2026-10-04 15:42:29 [ℹ]  node "ip-10-50-151-189.eu-central-1.compute.internal" is ready
+2026-10-04 15:42:29 [✔]  created 1 managed nodegroup(s) in cluster "k8s-from-zero"
+2026-10-04 15:42:29 [ℹ]  creating addon: metrics-server
+2026-10-04 15:42:29 [ℹ]  successfully created addon: metrics-server
+2026-10-04 15:42:30 [ℹ]  kubectl command should work with "~/.kube/config", try 'kubectl --kubeconfig=~/.kube/config get nodes'
+2026-10-04 15:42:30 [✔]  EKS cluster "k8s-from-zero" in "eu-central-1" region is ready
+# exit 0

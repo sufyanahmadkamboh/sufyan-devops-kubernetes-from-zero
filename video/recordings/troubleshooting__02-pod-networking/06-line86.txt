@@ -1,0 +1,9 @@
+# on k8s-worker
+ip -brief link show | grep -E 'flannel|cni0'
+ip route | grep 10.244
+---
+flannel.1        UNKNOWN        8e:7b:f1:45:ba:6a <BROADCAST,MULTICAST,UP,LOWER_UP> 
+cni0             UP             76:b2:64:36:af:cc <BROADCAST,MULTICAST,UP,LOWER_UP> 
+10.244.0.0/24 via 10.244.0.0 dev flannel.1 onlink 
+10.244.1.0/24 dev cni0 proto kernel scope link src 10.244.1.1 
+# exit 0

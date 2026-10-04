@@ -1,0 +1,5 @@
+multipass delete k8s-cp k8s-worker
+multipass purge
+---
+
+# exit 0

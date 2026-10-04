@@ -1,0 +1,6 @@
+# on k8s-micro
+sudo snap alias microk8s.kubectl kubectl
+---
+Added:
+  - microk8s.kubectl as kubectl
+# exit 0

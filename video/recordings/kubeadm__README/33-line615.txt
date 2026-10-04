@@ -1,0 +1,7 @@
+multipass exec k8s-cp -- cat /home/ubuntu/.kube/config > kubeconfig-lab
+kubectl --kubeconfig kubeconfig-lab get nodes
+---
+NAME         STATUS   ROLES           AGE   VERSION
+k8s-cp       Ready    control-plane   55s   v1.37.1
+k8s-worker   Ready    worker          19s   v1.37.1
+# exit 0

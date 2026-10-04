@@ -1,0 +1,11 @@
+# on k8s-worker
+sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock ps
+---
+time="2026-10-04T14:53:18Z" level=warning msg="Config \"/etc/crictl.yaml\" does not exist, trying next: \"/usr/bin/crictl.yaml\""
+CONTAINER           IMAGE               CREATED              STATE               NAME                ATTEMPT             POD ID              POD                        NAMESPACE
+1c1e8f1cbd5e3       520212b8b0fcd       About a minute ago   Running             coredns             0                   5ed5c4accab88       coredns-644c598bdd-xt86q   kube-system
+3dabd1809376d       43d9d8c1f8968       6 minutes ago        Running             nginx               0                   6287663861910       web-6f5d6d9c94-2zks8       default
+641200fd387f2       43d9d8c1f8968       6 minutes ago        Running             nginx               0                   768b1546471a8       web-6f5d6d9c94-fl5c7       default
+6f09ee2aa4e29       1644118ebe089       6 minutes ago        Running             kube-flannel        0                   0e37dfa0423cc       kube-flannel-ds-5mxcw      kube-flannel
+ce9ca53683ab4       728902c90c8b5       6 minutes ago        Running             kube-proxy          0                   1bc6abedb59e4       kube-proxy-tz68r           kube-system
+# exit 0

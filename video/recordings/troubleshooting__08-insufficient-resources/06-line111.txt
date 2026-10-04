@@ -1,0 +1,7 @@
+kubectl describe pod -l app=hungry | sed -n '/^Events:/,$p'
+---
+Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  0s    default-scheduler  0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+# exit 0

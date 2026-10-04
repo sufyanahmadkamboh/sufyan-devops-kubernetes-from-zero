@@ -1,0 +1,9 @@
+# on k8s-micro
+systemctl list-units 'snap.microk8s.*' --no-legend --plain | awk '{print $1, $3, $4}'
+---
+snap.microk8s.daemon-apiserver-kicker.service active running
+snap.microk8s.daemon-cluster-agent.service active running
+snap.microk8s.daemon-containerd.service active running
+snap.microk8s.daemon-k8s-dqlite.service active running
+snap.microk8s.daemon-kubelite.service active running
+# exit 0

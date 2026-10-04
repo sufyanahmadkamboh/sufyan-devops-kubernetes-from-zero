@@ -1,0 +1,7 @@
+# on k8s-cp
+kubectl get nodes
+---
+NAME         STATUS   ROLES           AGE     VERSION
+k8s-cp       Ready    control-plane   5m54s   v1.37.1
+k8s-worker   Ready    worker          5m18s   v1.37.1
+# exit 0

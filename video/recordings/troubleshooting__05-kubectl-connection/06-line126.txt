@@ -1,0 +1,6 @@
+# on k8s-cp
+rm -f /tmp/broken-config
+unset KUBECONFIG
+---
+
+# exit 0

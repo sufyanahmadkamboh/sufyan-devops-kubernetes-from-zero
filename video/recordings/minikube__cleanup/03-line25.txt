@@ -1,0 +1,5 @@
+kubectl config get-contexts minikube
+---
+CURRENT   NAME   CLUSTER   AUTHINFO   NAMESPACE
+error: context minikube not found
+# exit 1

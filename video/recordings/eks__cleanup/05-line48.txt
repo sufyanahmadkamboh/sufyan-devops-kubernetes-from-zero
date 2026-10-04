@@ -1,0 +1,11 @@
+eks/scripts/inventory.sh
+---
+Region: eu-central-1
+EKS clusters:          0
+VPCs:                  1
+NAT gateways (active): 0
+Elastic IPs:           0
+Load balancers:        0
+EC2 instances (on):    0
+CloudFormation stacks: 1
+# exit 0

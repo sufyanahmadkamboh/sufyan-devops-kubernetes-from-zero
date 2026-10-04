@@ -1,0 +1,7 @@
+# on k8s-cp
+kubectl apply -f coredns-backup.yaml
+kubectl -n kube-system rollout restart deployment coredns
+---
+configmap/coredns configured
+deployment.apps/coredns restarted
+# exit 0

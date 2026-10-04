@@ -1,0 +1,8 @@
+# on k8s-micro
+microk8s kubectl get pods -A
+---
+NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE
+kube-system   calico-kube-controllers-8496b98c8c-z66hk   1/1     Running   0          27s
+kube-system   calico-node-l4m5p                          1/1     Running   0          27s
+kube-system   coredns-84dbc6f76d-6xqbq                   1/1     Running   0          27s
+# exit 0

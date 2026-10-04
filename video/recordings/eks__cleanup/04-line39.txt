@@ -1,0 +1,16 @@
+eks/scripts/verify-cleanup.sh
+---
+Resources of the lab cluster k8s-from-zero in eu-central-1:
+  gone  EKS cluster
+  gone  CloudFormation stacks
+  gone  VPC
+  gone  NAT gateways
+  gone  Elastic IPs
+  gone  EC2 nodes
+  gone  EBS volumes
+  gone  Load balancers (from Services)
+  gone  Security groups
+  gone  IAM roles (eksctl-k8s-from-zero-*)
+
+Clean: nothing of k8s-from-zero is left.
+# exit 0

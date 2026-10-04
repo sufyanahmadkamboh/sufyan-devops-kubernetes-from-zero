@@ -1,0 +1,7 @@
+# on k8s-micro
+kubectl get deployment web >/dev/null 2>&1 || kubectl create deployment web --image=nginx:1.30-alpine --replicas=2
+kubectl get service web >/dev/null 2>&1 || kubectl expose deployment web --port=80 --type=NodePort
+kubectl rollout status deployment web --timeout=10s
+---
+deployment "web" successfully rolled out
+# exit 0

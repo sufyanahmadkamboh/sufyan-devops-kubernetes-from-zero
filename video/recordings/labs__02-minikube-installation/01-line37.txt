@@ -1,0 +1,16 @@
+minikube start -p prod-like --driver=docker --kubernetes-version=v1.36.0 --cpus=2 --memory=2200
+---
+* [prod-like] minikube v1.39.0 on Ubuntu 24.04
+  - MINIKUBE_IN_STYLE=false
+* Using the docker driver based on user configuration
+* Using Docker driver with root privileges
+* Starting "prod-like" primary control-plane node in "prod-like" cluster
+* Pulling base image v0.0.51 ...
+* Downloading Kubernetes v1.36.0 preload ...
+* Preparing Kubernetes v1.36.0 on containerd 2.3.4 ...
+* Configuring CNI (Container Networking Interface) ...
+* Verifying Kubernetes components...
+  - Using image gcr.io/k8s-minikube/storage-provisioner:v5
+* Enabled addons: default-storageclass, storage-provisioner
+* Done! kubectl is now configured to use "prod-like" cluster and "default" namespace by default
+# exit 0

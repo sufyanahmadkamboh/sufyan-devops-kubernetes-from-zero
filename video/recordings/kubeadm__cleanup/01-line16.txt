@@ -1,0 +1,7 @@
+# on k8s-cp
+kubectl delete service web --ignore-not-found
+kubectl delete deployment web --ignore-not-found
+---
+service "web" deleted from default namespace
+deployment.apps "web" deleted from default namespace
+# exit 0

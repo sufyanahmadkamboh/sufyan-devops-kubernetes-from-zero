@@ -1,0 +1,14 @@
+# on k8s-micro
+kubectl cluster-info
+kubectl get namespaces
+---
+Kubernetes control plane is running at https://127.0.0.1:16443
+CoreDNS is running at https://127.0.0.1:16443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+NAME              STATUS   AGE
+default           Active   36s
+kube-node-lease   Active   36s
+kube-public       Active   36s
+kube-system       Active   36s
+# exit 0

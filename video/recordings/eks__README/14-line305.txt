@@ -1,0 +1,5 @@
+kubectl get service web
+---
+NAME   TYPE           CLUSTER-IP       EXTERNAL-IP                                                                  PORT(S)        AGE
+web    LoadBalancer   172.20.118.174   a72ba0a318ba641bc93e45e807ae8628-1535282912.eu-central-1.elb.amazonaws.com   80:31399/TCP   3m55s
+# exit 0

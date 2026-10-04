@@ -1,0 +1,4 @@
+kubectl create deployment web --image=nginx:1.30-alpine --replicas=2
+---
+deployment.apps/web created
+# exit 0

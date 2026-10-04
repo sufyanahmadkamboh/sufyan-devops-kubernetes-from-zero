@@ -1,0 +1,5 @@
+# on k8s-cp
+kubectl describe node k8s-cp | grep -E 'Ready|NetworkReady|network plugin' | head -5
+---
+  Ready            False   Sun, 04 Oct 2026 14:46:14 +0000   Sun, 04 Oct 2026 14:46:08 +0000   KubeletNotReady              container runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:Network plugin returns error: cni plugin not initialized
+# exit 0

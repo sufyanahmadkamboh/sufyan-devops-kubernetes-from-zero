@@ -1,0 +1,6 @@
+multipass list
+---
+Name          State      IPv4             Image
+k8s-cp        RUNNING    10.97.7.168      Ubuntu 24.04 LTS
+k8s-worker    RUNNING    10.97.7.171      Ubuntu 24.04 LTS
+# exit 0

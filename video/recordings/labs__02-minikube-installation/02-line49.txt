@@ -1,0 +1,13 @@
+minikube profile list
+kubectl config get-contexts
+---
+┌───────────┬────────┬────────────┬──────────────┬─────────┬────────┬───────┬────────────────┬────────────────────┐
+│  PROFILE  │ DRIVER │  RUNTIME   │      IP      │ VERSION │ STATUS │ NODES │ ACTIVE PROFILE │ ACTIVE KUBECONTEXT │
+├───────────┼────────┼────────────┼──────────────┼─────────┼────────┼───────┼────────────────┼────────────────────┤
+│ minikube  │ docker │ containerd │ 192.168.49.2 │ v1.37.0 │ OK     │ 1     │ *              │                    │
+│ prod-like │ docker │ containerd │ 192.168.67.2 │ v1.36.0 │ OK     │ 1     │                │ *                  │
+└───────────┴────────┴────────────┴──────────────┴─────────┴────────┴───────┴────────────────┴────────────────────┘
+CURRENT   NAME        CLUSTER     AUTHINFO    NAMESPACE
+          minikube    minikube    minikube    default
+*         prod-like   prod-like   prod-like   default
+# exit 0

@@ -1,0 +1,15 @@
+# on k8s-cp
+POD=$(kubectl get pods -n kube-system -l k8s-app=kube-dns --field-selector=status.phase!=Succeeded \
+  -o jsonpath='{range .items[*]}{.metadata.name} {.status.containerStatuses[0].restartCount}{"\n"}{end}' | sort -k2 -n | tail -1 | cut -d' ' -f1)
+echo "Looking at $POD"
+kubectl describe pod -n kube-system "$POD" | grep -E 'State:|Reason:|Exit Code:|Restart Count:|Back-off' | head -8
+---
+Looking at coredns-6dbd6d75fb-qcvfq
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+    Restart Count:  1
+  Warning  BackOff    1s (x2 over 2s)  kubelet            spec.containers{coredns}: Back-off restarting failed container coredns in pod coredns-6dbd6d75fb-qcvfq_kube-system(24830367-2fd6-4229-8eac-cbf8e2a151b5)
+# exit 0

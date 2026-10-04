@@ -1,0 +1,10 @@
+# on k8s-cp
+kubectl --kubeconfig /tmp/broken-config get nodes --request-timeout=5s
+---
+E1004 14:51:44.098819    6089 memcache.go:381] "Couldn't get current server API group list" err="Get \"https://10.255.255.1:6443/api?timeout=5s\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"
+E1004 14:51:49.099678    6089 memcache.go:381] "Couldn't get current server API group list" err="Get \"https://10.255.255.1:6443/api?timeout=5s\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"
+E1004 14:51:54.100075    6089 memcache.go:381] "Couldn't get current server API group list" err="Get \"https://10.255.255.1:6443/api?timeout=5s\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"
+E1004 14:51:59.101008    6089 memcache.go:381] "Couldn't get current server API group list" err="Get \"https://10.255.255.1:6443/api?timeout=5s\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"
+E1004 14:52:04.102366    6089 memcache.go:381] "Couldn't get current server API group list" err="Get \"https://10.255.255.1:6443/api?timeout=5s\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"
+Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+# exit 1

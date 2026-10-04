@@ -1,0 +1,118 @@
+# Repository maintenance: proves that every command in the lessons still works.
+# GitHub's Ubuntu machines support nested virtualisation, so the lab's Ubuntu VMs are real LXD virtual machines;
+# tests/shims/multipass translates the few multipass commands the lessons use. Amazon EKS is not run here (it costs
+# money); it was run against AWS and recorded when the lesson was written.
+name: test-lessons
+
+on:
+  push:
+    branches: [main, ci]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * 1"     # weekly: catch upstream changes (packages, images, manifests)
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: Static checks (links, scripts, manifests)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Relative links point to files that exist
+        run: python3 tests/check_links.py
+      - name: ShellCheck
+        run: shellcheck -S style tests/shims/multipass eks/scripts/*.sh
+      - name: eksctl config is valid YAML with the expected safety settings
+        run: |
+          python3 - <<'EOF'
+          import yaml
+          c = yaml.safe_load(open("eks/cluster.yaml"))
+          assert c["metadata"]["region"] == "eu-central-1" and c["metadata"]["tags"]["Project"] == "k8s-from-zero"
+          assert c["managedNodeGroups"][0]["maxSize"] <= 2 and c["vpc"]["nat"]["gateway"] == "Single"
+          print("cluster.yaml ok")
+          EOF
+
+  lessons:
+    name: Run lessons (${{ matrix.part }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [kubeadm, microk8s, minikube]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Lab machines (KVM + LXD)
+        if: matrix.part != 'minikube'
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+          sudo snap install lxd --channel=6/stable || sudo snap refresh lxd --channel=6/stable
+          sudo lxd init --auto
+          # Docker on the runner sets the FORWARD policy to DROP, which would cut the lab VMs off the internet
+          sudo iptables -P FORWARD ACCEPT
+          sudo ip6tables -P FORWARD ACCEPT || true
+          echo "$PWD/tests/shims" >> "$GITHUB_PATH"
+      - name: Run the lessons
+        env:
+          PART: ${{ matrix.part }}
+        run: |
+          case "$PART" in
+            kubeadm)  files="kubeadm/README.md $(ls troubleshooting/0[1-7]*.md 2>/dev/null || true) labs/01-kubeadm-installation.md capstone/README.md kubeadm/cleanup.md" ;;
+            microk8s) files="microk8s/README.md labs/03-microk8s-installation.md microk8s/cleanup.md" ;;
+            minikube) files="minikube/README.md troubleshooting/08-insufficient-resources.md labs/02-minikube-installation.md examples/nginx/README.md minikube/cleanup.md" ;;
+          esac
+          existing=""; for f in $files; do [ -f "$f" ] && existing="$existing $f"; done
+          python3 tests/mdrun.py --update --record tests/out $existing
+      - name: Keep the real outputs and recordings
+        if: always()
+        run: git diff > tests/out/outputs.patch || true
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: run-${{ matrix.part }}
+          path: tests/out/
+          retention-days: 14
+
+  install-windows:
+    name: Install commands (Windows)
+    runs-on: windows-2025
+    timeout-minutes: 20
+    steps:
+      - name: winget install minikube, kubectl, eksctl, AWS CLI (the commands from the lessons)
+        shell: pwsh
+        run: |
+          winget install --exact --id Kubernetes.minikube --accept-source-agreements --accept-package-agreements --disable-interactivity
+          winget install --exact --id Kubernetes.kubectl --accept-source-agreements --accept-package-agreements --disable-interactivity
+          winget install --exact --id eksctl.eksctl --accept-source-agreements --accept-package-agreements --disable-interactivity
+          winget install --exact --id Amazon.AWSCLI --accept-source-agreements --accept-package-agreements --disable-interactivity
+          $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [Environment]::GetEnvironmentVariable("Path", "User")
+          minikube version
+          kubectl version --client
+          eksctl version
+          aws --version
+
+  install-macos:
+    name: Install commands (macOS)
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - name: brew install minikube, kubectl, eksctl, AWS CLI (the commands from the lessons)
+        run: |
+          brew install minikube kubectl awscli eksctl
+          minikube version
+          kubectl version --client
+          eksctl version
+          aws --version

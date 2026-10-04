@@ -1,0 +1,8 @@
+# on k8s-cp
+POD=$(kubectl get pods -n kube-system -l k8s-app=kube-dns \
+  -o jsonpath='{range .items[*]}{.metadata.name} {.status.containerStatuses[0].restartCount}{"\n"}{end}' | sort -k2 -n | tail -1 | cut -d' ' -f1)
+kubectl logs -n kube-system "$POD" --previous --tail=5 || kubectl logs -n kube-system "$POD" --tail=5
+---
+/etc/coredns/Corefile:13 - Error during parsing: Unknown directive 'forwardd'
+maxprocs: Leaving GOMAXPROCS=2: CPU quota undefined
+# exit 0

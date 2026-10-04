@@ -1,0 +1,18 @@
+0:00 Introduction
+1:51 What Kubernetes is
+3:10 Kubernetes architecture
+5:35 Prerequisites
+7:42 A full cluster with kubeadm
+10:51 Verify the kubeadm cluster
+12:01 Troubleshoot kubeadm
+14:01 Minikube installation
+15:00 Minikube verification
+16:45 MicroK8s installation
+17:51 MicroK8s verification
+18:46 Amazon EKS setup
+22:58 EKS verification
+24:59 Troubleshooting Kubernetes
+27:41 Installation method comparison
+29:14 Final challenge
+30:13 Cleanup
+32:17 Final summary

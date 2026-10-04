@@ -1,0 +1,68 @@
+# on k8s-micro
+sudo microk8s enable ingress
+---
+Infer repository core for addon ingress
+Adding Traefik Helm repository
+"traefik" has been added to your repositories
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "traefik" chart repository
+Update Complete. ⎈Happy Helming!⎈
+Installing Gateway API CRDs
+customresourcedefinition.apiextensions.k8s.io/backendtlspolicies.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/gatewayclasses.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/gateways.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/grpcroutes.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/httproutes.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/listenersets.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/referencegrants.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/tlsroutes.gateway.networking.k8s.io created
+validatingadmissionpolicy.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io created
+validatingadmissionpolicybinding.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io created
+Installing Traefik CRDs
+customresourcedefinition.apiextensions.k8s.io/ingressroutes.traefik.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/ingressroutetcps.traefik.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/ingressrouteudps.traefik.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/middlewares.traefik.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/middlewaretcps.traefik.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/serverstransports.traefik.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/serverstransporttcps.traefik.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/tlsoptions.traefik.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/tlsstores.traefik.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/traefikservices.traefik.io serverside-applied
+Installing Traefik ingress controller
+Release "traefik" does not exist. Installing it now.
+NAME: traefik
+LAST DEPLOYED: Sun Oct  4 14:45:44 2026
+NAMESPACE: ingress
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+traefik with docker.io/traefik:v3.6.13 has been deployed successfully on ingress namespace!
+Traefik ingress controller is enabled
+
+=============================
+
+Traefik Dashboard is available at: http://dashboard.localhost/dashboard/
+
+To create an Ingress, use the default IngressClass 'public' or 'traefik':
+
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: my-ingress
+  spec:
+    rules:
+    - host: my-app.example.com
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: my-service
+              port:
+                number: 80
+
+Gateway API is also available. Create HTTPRoute resources for modern routing.
+# exit 0

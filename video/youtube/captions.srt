@@ -1,0 +1,2215 @@
+1
+00:00:04,700 --> 00:00:06,796
+Welcome to Kubernetes From Zero.
+
+2
+00:00:06,796 --> 00:00:10,922
+In this course you will install Kubernetes four different ways.
+
+3
+00:00:10,922 --> 00:00:14,524
+First by hand, with kube admin, on two Ubuntu machines.
+
+4
+00:00:14,524 --> 00:00:18,520
+That is the one that teaches you how Kubernetes really works.
+
+5
+00:00:19,067 --> 00:00:23,916
+Then with Minikube, a complete cluster inside one container on your laptop.
+
+6
+00:00:24,467 --> 00:00:29,211
+Then with MicroK8s, a whole Kubernetes in one package with one command.
+
+7
+00:00:29,767 --> 00:00:36,948
+And finally on Amazon EKS, where AWS runs the control plane for you, and every hour costs real money.
+
+8
+00:00:37,500 --> 00:00:39,548
+Every time, the goal is the same:
+
+9
+00:00:39,548 --> 00:00:43,333
+a cluster you have verified, a test application that answers,
+
+10
+00:00:43,333 --> 00:00:47,739
+a failure you found and fixed yourself, and a clean machine at the end.
+
+11
+00:00:47,739 --> 00:00:51,276
+By the end you will know which method to choose, and why.
+
+12
+00:00:53,033 --> 00:00:54,732
+This is not a slide show.
+
+13
+00:00:54,732 --> 00:00:57,177
+We will work the way engineers work.
+
+14
+00:00:57,177 --> 00:01:00,370
+First understand what you are about to install.
+
+15
+00:01:00,933 --> 00:01:05,913
+Then install it, and verify it, with the same checklist on every cluster.
+
+16
+00:01:06,467 --> 00:01:08,142
+Then break it on purpose.
+
+17
+00:01:08,142 --> 00:01:13,571
+Eight troubleshooting labs, each with a real symptom, an investigation and a fix.
+
+18
+00:01:14,133 --> 00:01:19,293
+And finally compare the four methods and clean everything up, including the cloud resources.
+
+19
+00:01:21,033 --> 00:01:24,897
+Everything in this video comes from one free repository on GitHub.
+
+20
+00:01:24,897 --> 00:01:30,693
+The docs explain the concepts, and each installation method has its own lesson with a cleanup page.
+
+21
+00:01:31,233 --> 00:01:34,241
+The troubleshooting folder has the eight failure labs,
+
+22
+00:01:34,241 --> 00:01:37,583
+and labs and capstone have challenges with hidden solutions.
+
+23
+00:01:38,133 --> 00:01:39,455
+And this is important:
+
+24
+00:01:39,455 --> 00:01:44,323
+every command in the lessons is executed automatically on fresh virtual machines.
+
+25
+00:01:44,323 --> 00:01:48,109
+Every terminal in this video shows real output from those runs.
+
+26
+00:01:48,109 --> 00:01:50,513
+Nothing is typed by hand for the camera.
+
+27
+00:01:52,267 --> 00:01:54,215
+Running one container is easy.
+
+28
+00:01:54,215 --> 00:01:58,371
+But a real company runs hundreds of containers on many machines.
+
+29
+00:01:58,933 --> 00:02:04,132
+When a server dies at three in the morning, who restarts its containers somewhere else?
+
+30
+00:02:04,132 --> 00:02:07,120
+When a new copy is needed, which machine has room?
+
+31
+00:02:07,667 --> 00:02:11,157
+Who updates forty containers to a new version without downtime?
+
+32
+00:02:11,157 --> 00:02:14,703
+And how do the containers find each other when they keep moving?
+
+33
+00:02:15,267 --> 00:02:18,109
+Without an orchestrator, the answer is:
+
+34
+00:02:18,109 --> 00:02:19,931
+you, by hand, every time.
+
+35
+00:02:19,931 --> 00:02:23,721
+Kubernetes is the orchestrator that does it for you.
+
+36
+00:02:25,467 --> 00:02:27,026
+The core idea is simple.
+
+37
+00:02:27,026 --> 00:02:32,028
+You do not give Kubernetes commands like start this container on that server.
+
+38
+00:02:32,028 --> 00:02:34,171
+You describe the result you want:
+
+39
+00:02:34,171 --> 00:02:37,030
+the web application, two copies, this image.
+
+40
+00:02:37,567 --> 00:02:41,268
+Kubernetes constantly observes what is really running.
+
+41
+00:02:41,268 --> 00:02:44,216
+Say a node died, and only one copy is left.
+
+42
+00:02:44,767 --> 00:02:45,731
+It compares:
+
+43
+00:02:45,731 --> 00:02:47,658
+desired two, actual one.
+
+44
+00:02:47,658 --> 00:02:48,622
+And it acts:
+
+45
+00:02:48,622 --> 00:02:52,156
+it starts another copy on a healthy machine.
+
+46
+00:02:52,700 --> 00:02:59,481
+This loop, observe, compare, act, runs all the time, for every object in the cluster.
+
+47
+00:02:59,481 --> 00:03:01,714
+It is called reconciliation.
+
+48
+00:03:02,267 --> 00:03:09,141
+Self-healing, scheduling, service discovery, rolling updates and scaling all come from this one idea.
+
+49
+00:03:10,900 --> 00:03:13,489
+Here is what you are about to install.
+
+50
+00:03:13,489 --> 00:03:15,601
+On the left, the control plane:
+
+51
+00:03:15,601 --> 00:03:17,305
+the brain of the cluster.
+
+52
+00:03:17,305 --> 00:03:20,030
+The A P I server is the only front door.
+
+53
+00:03:20,030 --> 00:03:23,505
+You, the nodes and every component talk only to it.
+
+54
+00:03:23,505 --> 00:03:27,389
+Behind it, etcd stores the complete state of the cluster:
+
+55
+00:03:27,389 --> 00:03:29,364
+everything you ever declared.
+
+56
+00:03:29,900 --> 00:03:33,156
+The scheduler decides on which node each new Pod runs.
+
+57
+00:03:33,156 --> 00:03:37,074
+The controller manager runs the reconciliation loops we just saw.
+
+58
+00:03:37,633 --> 00:03:39,398
+In a cloud there is one more:
+
+59
+00:03:39,398 --> 00:03:43,718
+the cloud controller manager, which creates load balancers and volumes.
+
+60
+00:03:44,267 --> 00:03:45,892
+On the right, every node.
+
+61
+00:03:45,892 --> 00:03:47,972
+The kubelet is the node's agent:
+
+62
+00:03:47,972 --> 00:03:53,043
+it watches the A P I server for Pods assigned to its node, and makes them run.
+
+63
+00:03:53,600 --> 00:03:55,971
+It does not run containers itself.
+
+64
+00:03:55,971 --> 00:04:01,339
+It asks the container runtime, containerd, through an interface called C R I.
+
+65
+00:04:01,900 --> 00:04:04,738
+kube-proxy turns Services into network rules,
+
+66
+00:04:04,738 --> 00:04:10,288
+and the C N I plugin gives every Pod its own I P address and connects Pods across nodes.
+
+67
+00:04:10,288 --> 00:04:11,928
+Keep this picture in mind.
+
+68
+00:04:11,928 --> 00:04:15,081
+We will install every one of these pieces by hand.
+
+69
+00:04:16,833 --> 00:04:19,721
+Let's follow one command through the cluster.
+
+70
+00:04:19,721 --> 00:04:26,330
+kube control apply sends your Deployment to the A P I server, which validates it and stores it in etcd.
+
+71
+00:04:26,330 --> 00:04:27,421
+Nothing runs yet.
+
+72
+00:04:27,967 --> 00:04:33,226
+The controller manager notices a Deployment without Pods, and creates the Pod objects.
+
+73
+00:04:33,767 --> 00:04:39,471
+The scheduler notices Pods without a node, and assigns each one to a node with enough free resources.
+
+74
+00:04:40,033 --> 00:04:43,036
+The kubelet on that node notices a Pod assigned to it,
+
+75
+00:04:43,036 --> 00:04:46,483
+and asks containerd to pull the image and start the container.
+
+76
+00:04:47,033 --> 00:04:53,658
+Finally the C N I gives the Pod an I P address, and kube-proxy makes the Service send traffic to it.
+
+77
+00:04:53,658 --> 00:04:58,030
+Five components, each doing one job, all through the A P I server.
+
+78
+00:04:59,767 --> 00:05:03,012
+Every installation method runs these same components.
+
+79
+00:05:03,012 --> 00:05:04,972
+What changes is where they live.
+
+80
+00:05:04,972 --> 00:05:09,749
+With kube admin, the control plane runs as Pods on your control-plane machine,
+
+81
+00:05:09,749 --> 00:05:12,076
+and you are responsible for all of it.
+
+82
+00:05:12,633 --> 00:05:17,048
+Minikube packs an entire node into one Docker container on your laptop.
+
+83
+00:05:17,600 --> 00:05:22,232
+MicroK8s runs all the components in a single process called kube light,
+
+84
+00:05:22,232 --> 00:05:24,971
+and replaces etcd with a lighter database.
+
+85
+00:05:25,533 --> 00:05:30,083
+And on EKS, AWS runs the control plane in its own account.
+
+86
+00:05:30,083 --> 00:05:31,809
+You never even see it.
+
+87
+00:05:31,809 --> 00:05:34,163
+You only run the worker nodes.
+
+88
+00:05:35,900 --> 00:05:36,882
+Time to build.
+
+89
+00:05:36,882 --> 00:05:39,406
+For kube admin we need two machines:
+
+90
+00:05:39,406 --> 00:05:44,664
+a control plane with two C P Us and four gigabytes of memory, and a worker.
+
+91
+00:05:44,664 --> 00:05:50,974
+Multipass creates Ubuntu virtual machines with one command, on Windows, mac O S and Linux.
+
+92
+00:05:51,533 --> 00:05:55,476
+Two machines, both running, each with its own I P address.
+
+93
+00:05:55,476 --> 00:05:58,468
+Everything from here on happens inside them.
+
+94
+00:06:00,233 --> 00:06:05,468
+Before Kubernetes, Linux needs four kinds of preparation, and each one has a reason.
+
+95
+00:06:05,468 --> 00:06:11,140
+Swap goes off, because the kubelet's memory management assumes that memory limits are real.
+
+96
+00:06:11,700 --> 00:06:12,871
+Two kernel modules:
+
+97
+00:06:12,871 --> 00:06:16,261
+overlay for container file systems, and B R net filter,
+
+98
+00:06:16,261 --> 00:06:22,609
+so that traffic between Pods on a Linux bridge goes through I P tables, where Kubernetes Services live.
+
+99
+00:06:23,167 --> 00:06:24,464
+Two kernel settings:
+
+100
+00:06:24,464 --> 00:06:27,707
+I P forwarding, so the node can route Pod traffic,
+
+101
+00:06:27,707 --> 00:06:32,377
+and the bridge setting that makes bridged traffic visible to I P tables.
+
+102
+00:06:32,377 --> 00:06:33,739
+Remember I P forward.
+
+103
+00:06:33,739 --> 00:06:35,230
+We will break it later.
+
+104
+00:06:35,767 --> 00:06:36,655
+And the basics:
+
+105
+00:06:36,655 --> 00:06:39,083
+synchronised clocks for the certificates,
+
+106
+00:06:39,083 --> 00:06:42,163
+unique host names, and the ports the components use,
+
+107
+00:06:42,163 --> 00:06:46,901
+like six four four three for the A P I server and ten two fifty for the kubelet.
+
+108
+00:06:48,667 --> 00:06:50,055
+On both machines:
+
+109
+00:06:50,055 --> 00:06:53,078
+swap off, now and after every reboot.
+
+110
+00:06:53,633 --> 00:06:58,463
+Then the modules and the kernel settings, written to files so they survive a reboot.
+
+111
+00:06:58,463 --> 00:07:03,293
+The check shows both modules loaded, and forwarding and bridge filtering set to one.
+
+112
+00:07:05,033 --> 00:07:06,600
+Now the container runtime.
+
+113
+00:07:06,600 --> 00:07:10,035
+We install containerd 2 from Docker's package repository.
+
+114
+00:07:10,035 --> 00:07:13,230
+Then one detail that breaks many first installations:
+
+115
+00:07:13,230 --> 00:07:18,654
+we write containerd's full default configuration and switch on the systemd C group driver,
+
+116
+00:07:18,654 --> 00:07:22,270
+so containerd and the kubelet manage resources the same way.
+
+117
+00:07:22,833 --> 00:07:24,326
+containerd is active.
+
+118
+00:07:24,326 --> 00:07:28,093
+The kubelet will talk to it through the C R I socket.
+
+119
+00:07:28,633 --> 00:07:31,712
+Finally kube admin, kubelet and kube control,
+
+120
+00:07:31,712 --> 00:07:35,954
+version 1.37, from the official Kubernetes package repository,
+
+121
+00:07:35,954 --> 00:07:41,360
+and held, so a routine system update can never upgrade the cluster by accident.
+
+122
+00:07:43,100 --> 00:07:46,857
+kube admin init builds a control plane in phases.
+
+123
+00:07:46,857 --> 00:07:48,161
+First, preflight:
+
+124
+00:07:48,161 --> 00:07:49,848
+it checks the machine.
+
+125
+00:07:49,848 --> 00:07:55,292
+C P Us, memory, swap, ports, and whether the container runtime answers.
+
+126
+00:07:55,292 --> 00:07:59,739
+If anything is wrong, it stops before it changes anything.
+
+127
+00:08:00,300 --> 00:08:05,059
+Then it creates a private certificate authority and certificates for every component,
+
+128
+00:08:05,059 --> 00:08:06,851
+plus the admin kube config file.
+
+129
+00:08:07,400 --> 00:08:10,689
+Then it writes the control plane, A P I server,
+
+130
+00:08:10,689 --> 00:08:15,167
+scheduler, controller manager and etcd, as static Pod manifests.
+
+131
+00:08:15,167 --> 00:08:18,316
+The kubelet sees those files and starts them.
+
+132
+00:08:18,867 --> 00:08:24,841
+Finally it creates a token so workers can join, and installs Core D N S and kube-proxy.
+
+133
+00:08:26,600 --> 00:08:29,167
+Here it is, on the real control plane.
+
+134
+00:08:29,167 --> 00:08:31,802
+One command, with one important option:
+
+135
+00:08:31,802 --> 00:08:37,409
+the Pod network range, ten two forty four, which our network plugin will use later.
+
+136
+00:08:37,967 --> 00:08:39,202
+About a minute later:
+
+137
+00:08:39,202 --> 00:08:42,674
+your Kubernetes control plane has initialized successfully.
+
+138
+00:08:42,674 --> 00:08:48,616
+And at the end, the join command for workers, with a token and the hash of the cluster's certificate.
+
+139
+00:08:50,367 --> 00:08:55,473
+We copy the admin kube config into our home folder, and ask for the nodes.
+
+140
+00:08:55,473 --> 00:08:57,336
+The control plane is there.
+
+141
+00:08:57,336 --> 00:08:58,716
+And it is Not Ready.
+
+142
+00:08:59,267 --> 00:09:02,184
+Every beginner thinks something went wrong.
+
+143
+00:09:02,184 --> 00:09:05,982
+Describe the node, and Kubernetes tells you exactly why:
+
+144
+00:09:05,982 --> 00:09:09,713
+network plugin not ready, C N I plugin not initialized.
+
+145
+00:09:09,713 --> 00:09:10,934
+Nothing is broken.
+
+146
+00:09:10,934 --> 00:09:13,580
+Kubernetes does not ship a Pod network.
+
+147
+00:09:13,580 --> 00:09:16,158
+You have to choose one and install it.
+
+148
+00:09:17,900 --> 00:09:19,742
+What does a C N I plugin do?
+
+149
+00:09:19,742 --> 00:09:24,545
+Flannel, which we use, gives every node its own slice of the Pod network:
+
+150
+00:09:24,545 --> 00:09:30,006
+ten two forty four zero on the control plane, ten two forty four one on the worker.
+
+151
+00:09:30,567 --> 00:09:35,741
+On each node it creates a bridge for the local Pods, and a tunnel device called flannel one.
+
+152
+00:09:36,300 --> 00:09:39,041
+When a Pod talks to a Pod on another node,
+
+153
+00:09:39,041 --> 00:09:43,806
+Flannel wraps the packet in U D P and sends it across, a V X LAN overlay.
+
+154
+00:09:44,367 --> 00:09:46,950
+The result is the Kubernetes network model:
+
+155
+00:09:46,950 --> 00:09:51,516
+every Pod has its own I P, and every Pod can reach every other Pod directly.
+
+156
+00:09:51,516 --> 00:09:53,439
+Remember the node in the middle:
+
+157
+00:09:53,439 --> 00:09:55,361
+it has to forward those packets.
+
+158
+00:09:57,100 --> 00:09:59,633
+One kube control apply installs Flannel:
+
+159
+00:09:59,633 --> 00:10:06,154
+a namespace, permissions, its configuration, and a DaemonSet, which runs one Flannel Pod on every node.
+
+160
+00:10:06,700 --> 00:10:09,911
+Seconds later, the control plane is Ready.
+
+161
+00:10:10,467 --> 00:10:13,337
+And now every system Pod is running:
+
+162
+00:10:13,337 --> 00:10:21,232
+etcd, the A P I server, the controller manager, the scheduler, kube-proxy, Core D N S, and Flannel.
+
+163
+00:10:21,232 --> 00:10:24,421
+That is the architecture diagram, alive.
+
+164
+00:10:26,167 --> 00:10:27,049
+Now the worker.
+
+165
+00:10:27,049 --> 00:10:31,638
+On the control plane we create a fresh join command, and run it on the worker.
+
+166
+00:10:31,638 --> 00:10:36,638
+Behind the scenes the worker checks the control plane's certificate against the hash,
+
+167
+00:10:36,638 --> 00:10:40,815
+authenticates with the token, and receives its own kubelet certificate.
+
+168
+00:10:40,815 --> 00:10:42,756
+This node has joined the cluster.
+
+169
+00:10:43,300 --> 00:10:44,950
+A few seconds later:
+
+170
+00:10:44,950 --> 00:10:46,766
+two nodes, both Ready.
+
+171
+00:10:46,766 --> 00:10:50,149
+A real Kubernetes cluster, built by hand.
+
+172
+00:10:51,900 --> 00:10:55,685
+A cluster that says Ready is not yet a cluster you can trust.
+
+173
+00:10:55,685 --> 00:11:00,091
+We use the same verification checklist on every cluster in this course.
+
+174
+00:11:00,091 --> 00:11:05,054
+First, the nodes and the system Pods, and the health of the A P I server itself.
+
+175
+00:11:05,600 --> 00:11:06,930
+Then a real workload:
+
+176
+00:11:06,930 --> 00:11:11,614
+two copies of nginx, and a Service that makes them reachable from outside.
+
+177
+00:11:12,167 --> 00:11:14,138
+And the check most people forget:
+
+178
+00:11:14,138 --> 00:11:17,245
+can a Pod on one node reach a Pod on the other node?
+
+179
+00:11:17,245 --> 00:11:19,456
+That is the real test of the network.
+
+180
+00:11:21,200 --> 00:11:23,747
+The A P I server's own health checks:
+
+181
+00:11:23,747 --> 00:11:26,569
+every check passed, ready z check passed.
+
+182
+00:11:27,133 --> 00:11:30,963
+The web Deployment rolled out, two of two replicas available.
+
+183
+00:11:31,500 --> 00:11:34,444
+And through the NodePort on the worker's I P:
+
+184
+00:11:34,444 --> 00:11:35,752
+welcome to engine x.
+
+185
+00:11:35,752 --> 00:11:40,396
+The request went into the worker, through kube-proxy's rules, to a Pod.
+
+186
+00:11:42,133 --> 00:11:42,852
+Last check.
+
+187
+00:11:42,852 --> 00:11:47,818
+From the control plane, we fetch the page directly from a Pod's I P address.
+
+188
+00:11:47,818 --> 00:11:51,935
+The packet leaves the control plane through the Flannel tunnel,
+
+189
+00:11:51,935 --> 00:11:55,202
+arrives on the worker and is delivered to the Pod.
+
+190
+00:11:55,202 --> 00:11:56,639
+The answer comes back.
+
+191
+00:11:56,639 --> 00:11:58,926
+The Pod network works across nodes.
+
+192
+00:11:58,926 --> 00:12:00,495
+The cluster is verified.
+
+193
+00:12:02,233 --> 00:12:03,413
+Now we break it.
+
+194
+00:12:03,413 --> 00:12:05,183
+Troubleshooting lab one:
+
+195
+00:12:05,183 --> 00:12:06,953
+the worker is Not Ready.
+
+196
+00:12:06,953 --> 00:12:11,083
+Someone stopped its kubelet, but we don't know that yet.
+
+197
+00:12:11,083 --> 00:12:12,853
+All we see is Not Ready.
+
+198
+00:12:13,400 --> 00:12:16,029
+Describe the node and read the conditions.
+
+199
+00:12:16,029 --> 00:12:18,908
+Every condition says Unknown, and the message:
+
+200
+00:12:18,908 --> 00:12:21,162
+kubelet stopped posting node status.
+
+201
+00:12:21,162 --> 00:12:24,604
+The control plane has not heard from this node's agent.
+
+202
+00:12:25,167 --> 00:12:28,016
+So we look at the agent, on the worker:
+
+203
+00:12:28,016 --> 00:12:29,770
+the kubelet is inactive.
+
+204
+00:12:29,770 --> 00:12:31,012
+Root cause found.
+
+205
+00:12:31,012 --> 00:12:34,446
+Start it, and the node is Ready within seconds.
+
+206
+00:12:36,200 --> 00:12:36,859
+Lab three:
+
+207
+00:12:36,859 --> 00:12:42,661
+a colleague prepared a new machine, and kube admin init fails immediately, in preflight.
+
+208
+00:12:42,661 --> 00:12:45,364
+The error is about the container runtime.
+
+209
+00:12:45,900 --> 00:12:48,131
+Is containerd running?
+
+210
+00:12:48,131 --> 00:12:49,347
+Yes, active.
+
+211
+00:12:49,347 --> 00:12:51,679
+So the process is fine.
+
+212
+00:12:52,233 --> 00:12:55,212
+But the configuration file disables a plugin:
+
+213
+00:12:55,212 --> 00:12:55,609
+C R I.
+
+214
+00:12:55,609 --> 00:12:58,124
+The exact interface the kubelet needs.
+
+215
+00:12:58,124 --> 00:13:04,478
+The containerd package from Docker's repository is configured for Docker, which doesn't need it.
+
+216
+00:13:05,033 --> 00:13:11,609
+Write the full default configuration, restart, and crictl gets an answer from the runtime.
+
+217
+00:13:11,609 --> 00:13:12,851
+Preflight passes.
+
+218
+00:13:12,851 --> 00:13:13,362
+Lesson:
+
+219
+00:13:13,362 --> 00:13:15,920
+running is not the same as working.
+
+220
+00:13:17,667 --> 00:13:18,330
+Lab four:
+
+221
+00:13:18,330 --> 00:13:22,680
+a join command from someone's old notes hangs in discovery.
+
+222
+00:13:22,680 --> 00:13:24,745
+Debug it from the bottom up.
+
+223
+00:13:24,745 --> 00:13:28,505
+Can the new machine reach port six four four three?
+
+224
+00:13:28,505 --> 00:13:29,243
+Succeeded.
+
+225
+00:13:29,243 --> 00:13:31,381
+Does the A P I server answer?
+
+226
+00:13:31,381 --> 00:13:33,003
+Yes, with its version.
+
+227
+00:13:33,567 --> 00:13:34,982
+Then the credentials:
+
+228
+00:13:34,982 --> 00:13:39,295
+the token in the old command is not in the cluster's token list.
+
+229
+00:13:39,295 --> 00:13:41,857
+Tokens expire after twenty-four hours.
+
+230
+00:13:41,857 --> 00:13:42,396
+The fix:
+
+231
+00:13:42,396 --> 00:13:44,755
+always create a fresh join command.
+
+232
+00:13:45,300 --> 00:13:49,119
+For comparison, the other classic cause, a firewall.
+
+233
+00:13:49,119 --> 00:13:53,672
+Block port six four four three, and the connection is refused.
+
+234
+00:13:53,672 --> 00:13:59,914
+Two causes, the same hanging join, and one command, nc, tells them apart in a second.
+
+235
+00:14:01,667 --> 00:14:07,416
+Minikube takes everything we just built by hand and puts it into a single Docker container on your computer.
+
+236
+00:14:07,967 --> 00:14:10,403
+Inside that container is a complete node:
+
+237
+00:14:10,403 --> 00:14:13,256
+the control plane and a kubelet with containerd.
+
+238
+00:14:13,800 --> 00:14:15,530
+And here is the fun part:
+
+239
+00:14:15,530 --> 00:14:19,058
+Minikube sets it up with kube admin, automatically.
+
+240
+00:14:19,058 --> 00:14:23,624
+The same tool, the same components, in seconds instead of an hour.
+
+241
+00:14:24,167 --> 00:14:30,116
+It writes a kube control context called minikube, so your normal kube control talks to it.
+
+242
+00:14:30,667 --> 00:14:34,240
+On top, add-ons for common extras, and profiles:
+
+243
+00:14:34,240 --> 00:14:37,366
+several independent clusters side by side.
+
+244
+00:14:39,100 --> 00:14:41,750
+Installation is one binary.
+
+245
+00:14:41,750 --> 00:14:43,909
+Minikube version 1.39.
+
+246
+00:14:44,467 --> 00:14:50,109
+Then minikube start, with the Docker driver, two C P Us and four gigabytes.
+
+247
+00:14:50,109 --> 00:14:53,871
+It prepares Kubernetes 1.37, configures the C N I,
+
+248
+00:14:53,871 --> 00:14:58,987
+starts the components, and switches kube control to the new cluster.
+
+249
+00:14:58,987 --> 00:14:59,363
+Done.
+
+250
+00:15:01,100 --> 00:15:03,143
+Same checklist as before.
+
+251
+00:15:03,143 --> 00:15:04,451
+minikube status:
+
+252
+00:15:04,451 --> 00:15:09,599
+host, kubelet and A P I server running, kube config configured.
+
+253
+00:15:10,133 --> 00:15:14,688
+One node, Ready, called minikube, running containerd.
+
+254
+00:15:15,233 --> 00:15:16,745
+And proof of what we said:
+
+255
+00:15:16,745 --> 00:15:19,943
+the whole node is one Docker container on this machine.
+
+256
+00:15:21,700 --> 00:15:25,299
+The same web Deployment with two replicas, rolled out.
+
+257
+00:15:25,833 --> 00:15:32,287
+minikube service web dash dash url gives us an address that reaches the NodePort inside the container.
+
+258
+00:15:32,287 --> 00:15:33,553
+Welcome to engine x.
+
+259
+00:15:34,100 --> 00:15:40,626
+And after enabling the metrics server add-on, kube control top shows how much C P U and memory the node uses.
+
+260
+00:15:42,367 --> 00:15:44,439
+Profiles are separate clusters.
+
+261
+00:15:44,439 --> 00:15:45,976
+This one has two nodes:
+
+262
+00:15:45,976 --> 00:15:49,586
+two containers acting as a control plane and a worker.
+
+263
+00:15:50,133 --> 00:15:54,683
+In lab two, a third cluster called prod-like runs alongside the main one.
+
+264
+00:15:55,233 --> 00:15:59,770
+Because it runs Kubernetes 1.36, the version production still uses.
+
+265
+00:15:59,770 --> 00:16:04,375
+Test against it before you upgrade, then delete it with one command.
+
+266
+00:16:06,133 --> 00:16:08,726
+Troubleshooting lab eight happens here.
+
+267
+00:16:08,726 --> 00:16:11,253
+A cluster with one gigabyte of memory?
+
+268
+00:16:11,253 --> 00:16:13,514
+Minikube refuses before it starts:
+
+269
+00:16:13,514 --> 00:16:15,708
+Kubernetes alone needs about two.
+
+270
+00:16:16,267 --> 00:16:19,534
+Then a small web app that stays Pending.
+
+271
+00:16:19,534 --> 00:16:21,331
+No container, no logs.
+
+272
+00:16:21,867 --> 00:16:25,958
+The reason is in the Pod's events, written by the scheduler:
+
+273
+00:16:25,958 --> 00:16:28,550
+no node available, insufficient C P U.
+
+274
+00:16:28,550 --> 00:16:31,891
+And the Deployment asks for three hundred C P Us.
+
+275
+00:16:31,891 --> 00:16:37,483
+Someone typed three hundred, instead of three hundred M, three hundred millicores.
+
+276
+00:16:37,483 --> 00:16:40,620
+The scheduler counts requests, not real usage.
+
+277
+00:16:41,167 --> 00:16:44,313
+Correct the unit, and it rolls out immediately.
+
+278
+00:16:46,067 --> 00:16:50,132
+MicroK8s, from Canonical, takes a different approach.
+
+279
+00:16:50,132 --> 00:16:53,046
+All of Kubernetes is one snap package.
+
+280
+00:16:53,600 --> 00:16:57,770
+Inside, the control plane and node components run in one process,
+
+281
+00:16:57,770 --> 00:17:04,441
+kube light, and the cluster state lives in D Q lite, a distributed version of S Q lite, instead of etcd.
+
+282
+00:17:04,000 --> 00:17:12,259
+A C N I, Calico, and Core D N S are ready right after the installation, and add-ons are one command each.
+
+283
+00:17:12,800 --> 00:17:15,803
+You choose the Kubernetes version with a channel.
+
+284
+00:17:15,803 --> 00:17:20,031
+We pin 1.36 stable, the newest stable track at the time of recording,
+
+285
+00:17:20,031 --> 00:17:23,584
+so updates never jump to a new minor version on their own.
+
+286
+00:17:25,333 --> 00:17:27,918
+On a fresh Ubuntu machine:
+
+287
+00:17:27,918 --> 00:17:29,608
+one snap install.
+
+288
+00:17:29,608 --> 00:17:32,293
+MicroK8s 1.36 is installed.
+
+289
+00:17:32,833 --> 00:17:38,058
+We add our user to the microk8s group, so we don't need sudo for every command.
+
+290
+00:17:38,600 --> 00:17:41,975
+And microk8s status dash dash wait ready:
+
+291
+00:17:41,975 --> 00:17:42,633
+running.
+
+292
+00:17:42,633 --> 00:17:45,843
+No kube admin init, no C N I to choose.
+
+293
+00:17:45,843 --> 00:17:47,325
+That is the trade:
+
+294
+00:17:47,325 --> 00:17:49,794
+fewer decisions, less control.
+
+295
+00:17:51,533 --> 00:17:54,568
+The node is Ready, running containerd 2.
+
+296
+00:17:55,133 --> 00:17:57,385
+But look at the system Pods:
+
+297
+00:17:57,385 --> 00:17:59,557
+only Calico and Core D N S.
+
+298
+00:17:59,557 --> 00:18:02,453
+Where are the A P I server and etcd?
+
+299
+00:18:02,000 --> 00:18:04,280
+They are not Pods.
+
+300
+00:18:04,280 --> 00:18:07,766
+They are system dee services managed by the snap:
+
+301
+00:18:07,766 --> 00:18:13,598
+kube light, which runs the Kubernetes components, and k8s D Q lite, the datastore.
+
+302
+00:18:13,598 --> 00:18:16,443
+Same architecture, packaged differently.
+
+303
+00:18:18,200 --> 00:18:21,059
+The web workload answers through its NodePort.
+
+304
+00:18:21,600 --> 00:18:23,390
+Lab three goes one step further.
+
+305
+00:18:23,390 --> 00:18:26,692
+The ingress add-on installs the Traefik ingress controller,
+
+306
+00:18:26,692 --> 00:18:30,776
+and an Ingress rule sends the host name web dot local to the web Service.
+
+307
+00:18:31,333 --> 00:18:34,561
+A request for web dot local, on port eighty:
+
+308
+00:18:34,561 --> 00:18:36,028
+welcome to engine x.
+
+309
+00:18:36,567 --> 00:18:38,031
+Any other host name:
+
+310
+00:18:38,031 --> 00:18:40,448
+four oh four from the controller.
+
+311
+00:18:40,448 --> 00:18:42,865
+One entry point, routing by name.
+
+312
+00:18:42,865 --> 00:18:44,916
+That is what Ingress is for.
+
+313
+00:18:46,667 --> 00:18:47,743
+Now the cloud.
+
+314
+00:18:47,743 --> 00:18:53,127
+On Amazon EKS, AWS runs the control plane for you, in its own account.
+
+315
+00:18:53,127 --> 00:18:57,818
+The A P I servers and etcd run in several availability zones,
+
+316
+00:18:57,818 --> 00:19:01,586
+and AWS keeps them patched, scaled and backed up.
+
+317
+00:19:02,133 --> 00:19:03,187
+That has a price:
+
+318
+00:19:03,187 --> 00:19:08,148
+about ten cents per hour for the control plane alone, whether you use it or not.
+
+319
+00:19:08,700 --> 00:19:11,381
+Everything else is yours, in your account:
+
+320
+00:19:11,381 --> 00:19:15,784
+the network, the V P C with subnets in three zones and a nat gateway,
+
+321
+00:19:16,333 --> 00:19:20,878
+the worker nodes, here a managed node group of two E C2 instances,
+
+322
+00:19:21,433 --> 00:19:22,035
+and I A M:
+
+323
+00:19:22,035 --> 00:19:27,508
+which roles the cluster and the nodes use, and which people may do what inside the cluster.
+
+324
+00:19:29,267 --> 00:19:32,321
+Before we create anything in the cloud, four rules.
+
+325
+00:19:32,321 --> 00:19:34,178
+It costs money while it exists:
+
+326
+00:19:34,178 --> 00:19:37,531
+about twenty-five to thirty cents per hour for this lab.
+
+327
+00:19:37,531 --> 00:19:41,843
+Cheap for an afternoon, around two hundred dollars a month if forgotten.
+
+328
+00:19:42,400 --> 00:19:47,824
+Everything is created in one region, from one file, and tagged with the project name.
+
+329
+00:19:48,367 --> 00:19:53,336
+We count what exists in the region before we start, and again after cleanup.
+
+330
+00:19:53,336 --> 00:19:54,840
+The numbers must match.
+
+331
+00:19:55,400 --> 00:19:59,804
+And the teardown is verified by a script that checks every resource type.
+
+332
+00:19:59,804 --> 00:20:02,579
+It is part of the lesson, not an afterthought.
+
+333
+00:20:04,333 --> 00:20:04,699
+First:
+
+334
+00:20:04,699 --> 00:20:07,438
+which identity and which region are we using?
+
+335
+00:20:07,438 --> 00:20:11,700
+The account number and the user name are masked in everything you see.
+
+336
+00:20:12,233 --> 00:20:16,321
+Then the inventory of the region, before we start.
+
+337
+00:20:16,321 --> 00:20:22,617
+No EKS clusters, one V P C, no nat gateways, no load balancers, no instances.
+
+338
+00:20:22,617 --> 00:20:24,825
+Keep these numbers in mind.
+
+339
+00:20:26,567 --> 00:20:33,769
+This is the whole cluster, in one file for eksctl, the official command-line tool for EKS.
+
+340
+00:20:33,769 --> 00:20:38,491
+The name, the region, version 1.37, and tags on everything.
+
+341
+00:20:39,033 --> 00:20:44,815
+A new V P C with its own address range, and a single nat gateway, enough for a lab.
+
+342
+00:20:44,815 --> 00:20:50,318
+The A P I endpoint is public, for our kube control, and private, for the nodes.
+
+343
+00:20:50,867 --> 00:20:53,822
+Access entries decide who may use the cluster.
+
+344
+00:20:53,822 --> 00:20:56,906
+The creator automatically becomes cluster admin.
+
+345
+00:20:57,467 --> 00:20:58,784
+And the node group:
+
+346
+00:20:58,784 --> 00:21:05,091
+two T3 medium instances with twenty gigabyte disks, in private subnets, with no public I P.
+
+347
+00:21:06,833 --> 00:21:13,183
+Before we run eksctl, let's see the console path, recorded live in a read-only session.
+
+348
+00:21:13,183 --> 00:21:17,708
+In Elastic Kubernetes Service, clusters, click create cluster.
+
+349
+00:21:18,267 --> 00:21:20,239
+Choose custom configuration.
+
+350
+00:21:20,239 --> 00:21:26,721
+Quick configuration would create an EKS Auto Mode cluster, where AWS also manages the nodes.
+
+351
+00:21:27,267 --> 00:21:29,052
+Auto Mode is on by default.
+
+352
+00:21:29,052 --> 00:21:29,978
+Switch it off:
+
+353
+00:21:29,978 --> 00:21:34,938
+we want the classic setup with a managed node group that we size ourselves.
+
+354
+00:21:36,700 --> 00:21:43,653
+Enter the name, and choose the cluster I A M role, the role EKS uses to manage AWS resources for you.
+
+355
+00:21:43,653 --> 00:21:47,094
+Create new role opens I A M with the right policy.
+
+356
+00:21:47,633 --> 00:21:50,469
+The console pre-selects version 1.36.
+
+357
+00:21:50,469 --> 00:21:52,615
+Open the list and pick 1.37.
+
+358
+00:21:52,615 --> 00:21:57,366
+Each version shows when its standard and extended support end.
+
+359
+00:21:57,900 --> 00:21:58,898
+Cluster access:
+
+360
+00:21:58,898 --> 00:22:05,286
+allow cluster administrator access for your own identity, and the EKS A P I authentication mode.
+
+361
+00:22:07,033 --> 00:22:08,307
+Next, networking:
+
+362
+00:22:08,307 --> 00:22:12,501
+a V P C, and subnets in at least two availability zones.
+
+363
+00:22:12,501 --> 00:22:15,647
+The console pre-selects the default V P C.
+
+364
+00:22:15,647 --> 00:22:18,493
+eksctl builds a dedicated one instead.
+
+365
+00:22:19,033 --> 00:22:20,105
+Then add-ons.
+
+366
+00:22:20,105 --> 00:22:25,548
+The essential ones are the V P C C N I, Core D N S and kube-proxy.
+
+367
+00:22:26,100 --> 00:22:29,189
+And at the end of the review, the create button.
+
+368
+00:22:29,189 --> 00:22:30,412
+We do not click it.
+
+369
+00:22:30,412 --> 00:22:36,396
+Ours is created from the file, so it can be reviewed, repeated, and deleted with one command.
+
+370
+00:22:38,133 --> 00:22:39,039
+Now for real.
+
+371
+00:22:39,039 --> 00:22:42,382
+eksctl create cluster dash f cluster dot yammel.
+
+372
+00:22:42,382 --> 00:22:45,794
+It turns the file into two CloudFormation stacks:
+
+373
+00:22:45,794 --> 00:22:49,973
+one for the cluster and its network, one for the node group.
+
+374
+00:22:50,533 --> 00:22:53,470
+Fourteen and a half minutes later, measured:
+
+375
+00:22:53,470 --> 00:22:57,208
+two nodes ready, and the cluster k8s from zero is ready.
+
+376
+00:22:58,967 --> 00:23:01,410
+The same checklist, on EKS.
+
+377
+00:23:01,410 --> 00:23:07,836
+The control plane is active, version 1.37, platform version e k s four.
+
+378
+00:23:08,400 --> 00:23:13,565
+Two worker nodes, Ready, Amazon Linux 2023 with containerd.
+
+379
+00:23:13,565 --> 00:23:15,753
+Notice the I P addresses:
+
+380
+00:23:15,753 --> 00:23:18,030
+ten fifty, from our V P C.
+
+381
+00:23:18,567 --> 00:23:20,383
+And the system Pods.
+
+382
+00:23:20,383 --> 00:23:22,654
+No A P I server, no etcd:
+
+383
+00:23:22,654 --> 00:23:25,107
+those run in AWS's account.
+
+384
+00:23:25,107 --> 00:23:26,742
+Instead, aws-node:
+
+385
+00:23:26,742 --> 00:23:32,374
+the Amazon V P C C N I, which gives Pods real V P C addresses.
+
+386
+00:23:32,374 --> 00:23:35,281
+No overlay network like Flannel.
+
+387
+00:23:37,033 --> 00:23:38,514
+Our web Deployment:
+
+388
+00:23:38,514 --> 00:23:41,943
+two Pods on two nodes, with V P C addresses.
+
+389
+00:23:42,500 --> 00:23:45,720
+This time the Service is of type LoadBalancer.
+
+390
+00:23:45,720 --> 00:23:50,899
+Kubernetes asks AWS for a real load balancer, and gives us its D N S name.
+
+391
+00:23:51,433 --> 00:23:57,054
+From the internet, through the AWS load balancer, to a node port, to a Pod:
+
+392
+00:23:57,054 --> 00:23:58,553
+welcome to engine x.
+
+393
+00:24:00,300 --> 00:24:02,888
+The same cluster in the console:
+
+394
+00:24:02,888 --> 00:24:08,955
+active, version 1.37, its A P I endpoint and the I A M role eksctl created.
+
+395
+00:24:09,500 --> 00:24:11,949
+The compute tab shows the node group.
+
+396
+00:24:11,949 --> 00:24:14,331
+But the node list says unauthorized!
+
+397
+00:24:14,331 --> 00:24:18,369
+Our console session is read-only and has no EKS access entry.
+
+398
+00:24:18,369 --> 00:24:23,663
+The console reads nodes through the Kubernetes A P I, and Kubernetes refuses it.
+
+399
+00:24:23,663 --> 00:24:27,634
+An AWS permission alone does not let you inside the cluster.
+
+400
+00:24:28,200 --> 00:24:31,174
+The access tab shows who does have entries:
+
+401
+00:24:31,174 --> 00:24:35,255
+the node role, an AWS service role, and our admin identity.
+
+402
+00:24:37,000 --> 00:24:42,334
+Outside EKS, CloudFormation shows the two stacks eksctl created.
+
+403
+00:24:42,900 --> 00:24:47,820
+E C2 shows the two worker instances, in two different availability zones.
+
+404
+00:24:48,367 --> 00:24:52,219
+And the load balancer that Kubernetes created for our Service.
+
+405
+00:24:52,219 --> 00:24:52,965
+Remember it:
+
+406
+00:24:52,965 --> 00:24:57,811
+it is not part of eksctl's stacks, and that matters when we delete everything.
+
+407
+00:24:59,567 --> 00:25:03,220
+Five more labs, and one method for all of them.
+
+408
+00:25:03,220 --> 00:25:05,940
+First, what exactly is the symptom?
+
+409
+00:25:05,940 --> 00:25:07,728
+Read the status column.
+
+410
+00:25:08,267 --> 00:25:11,250
+Second, what does Kubernetes know about it?
+
+411
+00:25:11,250 --> 00:25:15,136
+Describe the object, and read its conditions and events.
+
+412
+00:25:15,700 --> 00:25:18,541
+Third, what does the component itself say?
+
+413
+00:25:18,541 --> 00:25:23,140
+Container logs, or the system journal of the kubelet and containerd.
+
+414
+00:25:23,700 --> 00:25:25,927
+Fourth, which layer is broken:
+
+415
+00:25:25,927 --> 00:25:32,535
+the network, the runtime, the kubelet, the A P I server, or the workload's configuration?
+
+416
+00:25:33,100 --> 00:25:38,406
+And fifth, change one thing, and verify with the same command that showed the problem.
+
+417
+00:25:40,167 --> 00:25:42,151
+Lab two is the nasty one.
+
+418
+00:25:42,151 --> 00:25:45,484
+Every node is Ready, every Pod is Running.
+
+419
+00:25:45,484 --> 00:25:47,071
+Nothing looks wrong.
+
+420
+00:25:47,633 --> 00:25:52,015
+But from the control plane, a Pod on the worker does not answer.
+
+421
+00:25:52,015 --> 00:25:53,521
+The request times out.
+
+422
+00:25:54,067 --> 00:25:58,416
+The Pod answers inside itself, and Flannel's devices exist.
+
+423
+00:25:58,416 --> 00:26:00,407
+So, the node in the middle:
+
+424
+00:26:00,407 --> 00:26:02,693
+is it still forwarding packets?
+
+425
+00:26:02,693 --> 00:26:04,167
+I P forward is zero.
+
+426
+00:26:04,167 --> 00:26:05,936
+Someone switched it off.
+
+427
+00:26:05,936 --> 00:26:11,687
+sysctl dash dash system restores the saved value, and the request works again.
+
+428
+00:26:11,687 --> 00:26:14,710
+This is why we test traffic across nodes.
+
+429
+00:26:16,467 --> 00:26:17,087
+Lab five.
+
+430
+00:26:17,087 --> 00:26:19,842
+The two most common kube control errors.
+
+431
+00:26:19,842 --> 00:26:25,836
+localhost eight thousand eighty refused means kube control found no kube config at all.
+
+432
+00:26:26,400 --> 00:26:30,415
+A timeout to an address means the kube config points at the wrong server.
+
+433
+00:26:30,967 --> 00:26:34,018
+The first command when kube control misbehaves:
+
+434
+00:26:34,018 --> 00:26:35,901
+config view dash dash minify.
+
+435
+00:26:35,901 --> 00:26:39,536
+It shows exactly where kube control is going to connect.
+
+436
+00:26:41,300 --> 00:26:41,956
+Lab six.
+
+437
+00:26:41,956 --> 00:26:45,808
+Someone tidied up the Core D N S configuration.
+
+438
+00:26:45,808 --> 00:26:49,660
+The new Core D N S Pods crash, again and again:
+
+439
+00:26:49,660 --> 00:26:51,300
+crash loop back off.
+
+440
+00:26:51,833 --> 00:26:57,300
+Crash loop back off is not the cause, it only means the container keeps exiting.
+
+441
+00:26:57,300 --> 00:27:00,648
+The cause is in the logs of the last crashed run:
+
+442
+00:27:00,648 --> 00:27:03,655
+an unknown directive, forwardd, with two Ds.
+
+443
+00:27:03,655 --> 00:27:04,270
+One typo.
+
+444
+00:27:04,833 --> 00:27:11,233
+Restore the backup, restart Core D N S, and a test Pod resolves the web Service's name again.
+
+445
+00:27:12,967 --> 00:27:13,671
+Lab seven.
+
+446
+00:27:13,671 --> 00:27:15,783
+The worker is Not Ready again.
+
+447
+00:27:15,783 --> 00:27:19,022
+Same symptom as lab one, but read the message:
+
+448
+00:27:19,022 --> 00:27:23,881
+this time the kubelet is reporting, and it reports a runtime problem.
+
+449
+00:27:24,433 --> 00:27:25,350
+On the node:
+
+450
+00:27:25,350 --> 00:27:28,865
+the kubelet is active, containerd is inactive.
+
+451
+00:27:29,400 --> 00:27:34,195
+And the kubelet's journal shows it failing to reach containerd's socket.
+
+452
+00:27:34,195 --> 00:27:36,858
+Start containerd, and the node is Ready.
+
+453
+00:27:36,858 --> 00:27:38,856
+Same symptom, different layer:
+
+454
+00:27:38,856 --> 00:27:40,455
+always read the message.
+
+455
+00:27:42,200 --> 00:27:44,441
+Let's put the four side by side.
+
+456
+00:27:44,441 --> 00:27:49,623
+kube admin is for learning and for running Kubernetes on your own servers.
+
+457
+00:27:49,623 --> 00:27:51,654
+Minikube for laptops and C I.
+
+458
+00:27:51,654 --> 00:27:54,735
+MicroK8s for edge devices and small servers.
+
+459
+00:27:54,735 --> 00:27:56,556
+EKS for production on AWS.
+
+460
+00:27:57,100 --> 00:27:58,591
+The control plane:
+
+461
+00:27:58,591 --> 00:28:05,386
+static Pods you own, a container, a single process, or invisible in AWS's account.
+
+462
+00:28:05,386 --> 00:28:06,546
+The datastore:
+
+463
+00:28:06,546 --> 00:28:09,197
+etcd everywhere except MicroK8s.
+
+464
+00:28:09,197 --> 00:28:11,103
+And the network plugin:
+
+465
+00:28:11,103 --> 00:28:15,246
+your choice, built in, Calico, or the V P C C N I.
+
+466
+00:28:15,800 --> 00:28:16,979
+High availability:
+
+467
+00:28:16,979 --> 00:28:20,712
+three control planes and a load balancer with kube admin,
+
+468
+00:28:20,712 --> 00:28:25,690
+none for Minikube, automatic with three MicroK8s nodes, and built in on EKS.
+
+469
+00:28:25,690 --> 00:28:28,900
+Upgrades are yours, except the EKS control plane.
+
+470
+00:28:29,433 --> 00:28:31,353
+Cost and production use.
+
+471
+00:28:31,353 --> 00:28:32,393
+Free locally.
+
+472
+00:28:32,393 --> 00:28:38,231
+On EKS, about thirty cents per hour, and in return you operate much less.
+
+473
+00:28:39,967 --> 00:28:42,671
+Lab five turns this into decisions.
+
+474
+00:28:42,671 --> 00:28:47,231
+A developer testing a chart on a laptop, or a C I pipeline:
+
+475
+00:28:47,231 --> 00:28:47,926
+Minikube.
+
+476
+00:28:48,467 --> 00:28:52,650
+A factory with forty small machines, often offline:
+
+477
+00:28:52,650 --> 00:28:53,388
+MicroK8s.
+
+478
+00:28:53,388 --> 00:28:59,048
+A start-up with a customer A P I on AWS and no Kubernetes specialist:
+
+479
+00:28:59,048 --> 00:28:59,376
+EKS.
+
+480
+00:28:59,933 --> 00:29:05,972
+A bank that must own everything in its own data centre, or you, preparing for the C K A exam:
+
+481
+00:29:05,972 --> 00:29:06,686
+kube admin.
+
+482
+00:29:06,686 --> 00:29:08,699
+Most companies use two at once:
+
+483
+00:29:08,699 --> 00:29:12,985
+a local cluster for development, and a managed one for production.
+
+484
+00:29:14,733 --> 00:29:15,553
+The capstone.
+
+485
+00:29:15,553 --> 00:29:20,723
+On Monday morning, the team's kube admin cluster stopped working over the weekend.
+
+486
+00:29:20,723 --> 00:29:22,678
+There are three faults at once:
+
+487
+00:29:22,678 --> 00:29:29,235
+kube control points at the wrong server, containerd is stopped on the worker, and I P forwarding is off.
+
+488
+00:29:29,800 --> 00:29:33,002
+Find them from the symptoms, as if you didn't know.
+
+489
+00:29:33,002 --> 00:29:33,315
+Hint:
+
+490
+00:29:33,315 --> 00:29:35,952
+fix the layer that hides the others first.
+
+491
+00:29:35,952 --> 00:29:40,723
+You cannot investigate nodes while kube control cannot even reach the A P I.
+
+492
+00:29:41,267 --> 00:29:47,267
+When the nodes look healthy, run the full checklist, including Pod to Pod traffic across nodes.
+
+493
+00:29:47,267 --> 00:29:49,541
+That is where the third fault hides.
+
+494
+00:29:50,100 --> 00:29:52,232
+And finish like a professional:
+
+495
+00:29:52,232 --> 00:29:53,745
+a short incident note.
+
+496
+00:29:53,745 --> 00:29:59,385
+What broke, the impact, how you found it, how you fixed it, and how to prevent it.
+
+497
+00:29:59,933 --> 00:30:02,759
+The capstone also has fifteen questions.
+
+498
+00:30:02,759 --> 00:30:04,595
+Answer them without notes.
+
+499
+00:30:04,595 --> 00:30:07,703
+If you can, you have understood this course.
+
+500
+00:30:07,703 --> 00:30:09,611
+The scenario is tested too:
+
+501
+00:30:09,611 --> 00:30:12,083
+it runs in C I on the real cluster.
+
+502
+00:30:13,833 --> 00:30:16,150
+Time to clean up, and to prove it.
+
+503
+00:30:16,150 --> 00:30:17,308
+kube admin first:
+
+504
+00:30:17,308 --> 00:30:23,168
+drain the worker, so its Pods move away cleanly, and delete the node from the cluster.
+
+505
+00:30:23,733 --> 00:30:29,662
+kube admin reset on both machines removes the control plane, etcd's data and the certificates.
+
+506
+00:30:29,662 --> 00:30:33,951
+It does not remove the C N I configuration and the I P tables rules:
+
+507
+00:30:33,951 --> 00:30:35,528
+the lesson does that too.
+
+508
+00:30:36,067 --> 00:30:36,503
+Proof:
+
+509
+00:30:36,503 --> 00:30:39,773
+the A P I server is gone, connection refused.
+
+510
+00:30:39,773 --> 00:30:43,551
+Then multipass delete and purge remove the machines.
+
+511
+00:30:45,300 --> 00:30:45,922
+Minikube:
+
+512
+00:30:45,922 --> 00:30:50,965
+one command removes the container, its disk and its kube control context.
+
+513
+00:30:51,500 --> 00:30:52,502
+And we check:
+
+514
+00:30:52,502 --> 00:30:54,815
+no Kubernetes containers left.
+
+515
+00:30:55,367 --> 00:30:55,967
+MicroK8s:
+
+516
+00:30:55,967 --> 00:31:01,836
+snap remove with purge removes the package and all its data, without keeping a snapshot.
+
+517
+00:31:02,400 --> 00:31:04,690
+And the machine itself is deleted.
+
+518
+00:31:06,433 --> 00:31:08,736
+EKS, and here the order matters.
+
+519
+00:31:08,736 --> 00:31:11,469
+First delete the LoadBalancer Service.
+
+520
+00:31:11,469 --> 00:31:15,714
+The load balancer was created by Kubernetes, not by eksctl.
+
+521
+00:31:15,714 --> 00:31:19,815
+If the cluster disappears first, the load balancer stays,
+
+522
+00:31:19,815 --> 00:31:23,988
+keeps costing money, and blocks the deletion of the V P C.
+
+523
+00:31:24,533 --> 00:31:26,651
+Then eksctl delete cluster.
+
+524
+00:31:26,651 --> 00:31:29,083
+Eleven minutes later, measured:
+
+525
+00:31:29,083 --> 00:31:31,828
+all cluster resources were deleted.
+
+526
+00:31:32,367 --> 00:31:34,759
+Never trust it should be gone.
+
+527
+00:31:34,759 --> 00:31:38,825
+The verification script checks every resource type:
+
+528
+00:31:38,825 --> 00:31:42,811
+cluster, stacks, V P C, nat gateway, elastic I Ps,
+
+529
+00:31:42,811 --> 00:31:48,233
+instances, volumes, load balancers, security groups and I A M roles.
+
+530
+00:31:48,233 --> 00:31:48,711
+Clean.
+
+531
+00:31:50,467 --> 00:31:51,586
+And the final check:
+
+532
+00:31:51,586 --> 00:31:56,290
+the inventory of the region after cleanup is identical to the one before we started.
+
+533
+00:31:56,833 --> 00:31:59,651
+The cluster existed for about forty-one minutes:
+
+534
+00:31:59,651 --> 00:32:05,050
+fourteen and a half to create, our tests and the console tour, and eleven minutes to delete.
+
+535
+00:32:05,600 --> 00:32:11,265
+At on-demand list prices, the whole EKS lesson cost roughly fifteen to twenty cents.
+
+536
+00:32:11,800 --> 00:32:13,448
+Nothing was left behind.
+
+537
+00:32:13,448 --> 00:32:16,675
+That is what responsible cloud work looks like.
+
+538
+00:32:18,433 --> 00:32:19,497
+Let's look back.
+
+539
+00:32:19,497 --> 00:32:20,626
+You started with:
+
+540
+00:32:20,626 --> 00:32:22,886
+I have never installed Kubernetes.
+
+541
+00:32:22,886 --> 00:32:28,668
+Now you can explain the architecture, and what happens when you run kube control apply.
+
+542
+00:32:29,233 --> 00:32:32,240
+You have installed Kubernetes four ways:
+
+543
+00:32:32,240 --> 00:32:37,728
+by hand with kube admin, with Minikube, with MicroK8s, and on Amazon EKS.
+
+544
+00:32:38,267 --> 00:32:43,667
+You can verify any cluster with one checklist, including the test most people forget:
+
+545
+00:32:43,667 --> 00:32:45,001
+traffic across nodes.
+
+546
+00:32:45,567 --> 00:32:50,466
+You have found and fixed eight real installation problems, always with the same method.
+
+547
+00:32:51,000 --> 00:32:54,970
+And you know which method to choose, and how to leave nothing behind.
+
+548
+00:32:56,733 --> 00:32:57,828
+Your next steps.
+
+549
+00:32:57,828 --> 00:33:02,002
+Follow the tutorial folder, and build every cluster yourself.
+
+550
+00:33:02,002 --> 00:33:06,040
+The outputs in the lessons show you exactly what to expect.
+
+551
+00:33:06,600 --> 00:33:11,118
+Do the labs and the capstone before you open the solutions.
+
+552
+00:33:11,118 --> 00:33:12,037
+Then repeat:
+
+553
+00:33:12,037 --> 00:33:16,478
+understand, install, verify, break, troubleshoot, compare.
+
+554
+00:33:16,478 --> 00:33:19,541
+Thanks for watching, and happy building.

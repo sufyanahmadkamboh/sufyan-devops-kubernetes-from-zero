@@ -1,0 +1,21 @@
+CP_IP=$(multipass info k8s-cp | awk '/IPv4/ {print $2; exit}')
+multipass exec k8s-lab -- nc -zv -w 3 "$CP_IP" 6443
+multipass exec k8s-lab -- curl -sk "https://$CP_IP:6443/version"
+---
+Connection to 10.97.7.168 6443 port [tcp/*] succeeded!
+{
+  "major": "1",
+  "minor": "37",
+  "emulationMajor": "1",
+  "emulationMinor": "37",
+  "minCompatibilityMajor": "1",
+  "minCompatibilityMinor": "36",
+  "gitVersion": "v1.37.1",
+  "gitCommit": "f78e722310e50bcaca9276be22276d9e91d91308",
+  "gitTreeState": "clean",
+  "buildDate": "2026-09-23T17:06:23Z",
+  "goVersion": "go1.26.8",
+  "compiler": "gc",
+  "platform": "linux/amd64"
+}
+# exit 0

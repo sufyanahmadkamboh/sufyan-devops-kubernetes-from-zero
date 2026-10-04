@@ -1,0 +1,5 @@
+# on k8s-micro
+kubectl create ingress web --class=public --rule="web.local/*=web:80"
+---
+ingress.networking.k8s.io/web created
+# exit 0

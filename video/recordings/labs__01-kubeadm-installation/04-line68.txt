@@ -1,0 +1,12 @@
+# on k8s-cp
+kubectl wait --for=condition=Ready node/k8s-worker2 --timeout=10s
+kubectl label node k8s-worker2 node-role.kubernetes.io/worker= --overwrite
+kubectl get nodes
+---
+node/k8s-worker2 condition met
+node/k8s-worker2 labeled
+NAME          STATUS   ROLES           AGE     VERSION
+k8s-cp        Ready    control-plane   8m51s   v1.37.1
+k8s-worker    Ready    worker          8m15s   v1.37.1
+k8s-worker2   Ready    worker          9s      v1.37.1
+# exit 0

@@ -1,0 +1,12 @@
+# on k8s-cp
+kubectl get pods -n kube-system
+---
+NAME                             READY   STATUS    RESTARTS   AGE
+coredns-559f6c778d-94jqc         0/1     Pending   0          1s
+coredns-559f6c778d-gpbqb         0/1     Pending   0          1s
+etcd-k8s-cp                      1/1     Running   0          7s
+kube-apiserver-k8s-cp            0/1     Running   0          7s
+kube-controller-manager-k8s-cp   0/1     Running   0          7s
+kube-proxy-9kw2g                 1/1     Running   0          2s
+kube-scheduler-k8s-cp            1/1     Running   0          8s
+# exit 0

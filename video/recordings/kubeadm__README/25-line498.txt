@@ -1,0 +1,5 @@
+# on k8s-cp
+kubectl label node k8s-worker node-role.kubernetes.io/worker=
+---
+node/k8s-worker labeled
+# exit 0

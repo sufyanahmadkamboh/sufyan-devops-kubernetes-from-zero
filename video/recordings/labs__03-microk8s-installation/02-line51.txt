@@ -1,0 +1,6 @@
+# on k8s-micro
+kubectl get pods -n ingress
+---
+NAME            READY   STATUS    RESTARTS   AGE
+traefik-vc8kp   1/1     Running   0          8s
+# exit 0

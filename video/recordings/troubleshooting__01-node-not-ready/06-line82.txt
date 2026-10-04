@@ -1,0 +1,9 @@
+# on k8s-worker
+systemctl is-active kubelet || true
+sudo journalctl -u kubelet --no-pager -n 3
+---
+inactive
+Oct 04 14:47:07 k8s-worker systemd[1]: kubelet.service: Deactivated successfully.
+Oct 04 14:47:07 k8s-worker systemd[1]: Stopped kubelet.service - kubelet: The Kubernetes Node Agent.
+Oct 04 14:47:07 k8s-worker systemd[1]: kubelet.service: Consumed 1.448s CPU time.
+# exit 0

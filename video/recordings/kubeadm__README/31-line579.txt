@@ -1,0 +1,9 @@
+# on k8s-cp
+NODE_PORT=$(kubectl get service web -o jsonpath='{.spec.ports[0].nodePort}')
+WORKER_IP=$(kubectl get node k8s-worker -o jsonpath='{.status.addresses[?(@.type=="InternalIP")].address}')
+echo "http://$WORKER_IP:$NODE_PORT"
+curl -s "http://$WORKER_IP:$NODE_PORT" | grep -o '<title>.*</title>'
+---
+http://10.97.7.171:30883
+<title>Welcome to nginx!</title>
+# exit 0

@@ -1,0 +1,5 @@
+kubectl top nodes
+---
+NAME       CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+minikube   132m         3%       673Mi           4%          
+# exit 0

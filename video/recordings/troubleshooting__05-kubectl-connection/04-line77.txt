@@ -1,0 +1,10 @@
+# on k8s-cp
+echo "KUBECONFIG=${KUBECONFIG:-<not set, so ~/.kube/config>}"
+kubectl config get-contexts
+kubectl config current-context
+---
+KUBECONFIG=<not set, so ~/.kube/config>
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+kubernetes-admin@kubernetes
+# exit 0

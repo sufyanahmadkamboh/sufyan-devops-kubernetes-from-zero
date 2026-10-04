@@ -1,0 +1,6 @@
+# on k8s-micro
+microk8s status
+---
+bash: line 1: microk8s: command not found
+Error: Command not found
+# exit 127

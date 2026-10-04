@@ -1,0 +1,4 @@
+kubectl delete deployment hungry
+---
+deployment.apps "hungry" deleted from default namespace
+# exit 0

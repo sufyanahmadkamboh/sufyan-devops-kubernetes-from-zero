@@ -1,0 +1,6 @@
+# on k8s-micro
+kubectl top nodes
+---
+NAME        CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+k8s-micro   444m         22%      1169Mi          31%         
+# exit 0

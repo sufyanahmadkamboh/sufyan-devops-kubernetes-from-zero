@@ -1,0 +1,4 @@
+aws eks update-kubeconfig --name k8s-from-zero --region eu-central-1
+---
+Added new context arn:aws:eks:eu-central-1:<account-id>:cluster/k8s-from-zero to ~/.kube/config
+# exit 0

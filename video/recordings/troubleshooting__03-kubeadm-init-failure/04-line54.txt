@@ -1,0 +1,7 @@
+# on k8s-lab
+systemctl is-active containerd
+containerd --version
+---
+active
+containerd containerd v2.3.6 ee2735368117d2eb259779949d5e75cdafec9761
+# exit 0

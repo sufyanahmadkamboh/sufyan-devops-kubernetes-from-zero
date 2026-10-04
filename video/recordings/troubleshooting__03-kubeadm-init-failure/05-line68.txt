@@ -1,0 +1,6 @@
+# on k8s-lab
+sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock version
+---
+time="2026-10-04T14:49:36Z" level=warning msg="Config \"/etc/crictl.yaml\" does not exist, trying next: \"/usr/bin/crictl.yaml\""
+time="2026-10-04T14:49:40Z" level=error msg="validate service connection: validate CRI v1 runtime API for endpoint \"unix:///run/containerd/containerd.sock\": rpc error: code = Unimplemented desc = unknown service runtime.v1.RuntimeService"
+# exit 1

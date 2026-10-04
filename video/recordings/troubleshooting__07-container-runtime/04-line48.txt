@@ -1,0 +1,7 @@
+# on k8s-worker
+echo "kubelet $(systemctl is-active kubelet)"
+echo "containerd $(systemctl is-active containerd || true)"
+---
+kubelet active
+containerd inactive
+# exit 0

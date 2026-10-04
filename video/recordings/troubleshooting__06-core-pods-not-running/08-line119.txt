@@ -1,0 +1,17 @@
+# on k8s-cp
+kubectl run dnstest --image=busybox:1.37 --rm -i --restart=Never --quiet -- nslookup web.default.svc.cluster.local
+---
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	web.default.svc.cluster.local
+Address: 10.108.119.230
+
+
+warning: couldn't attach to pod/dnstest, falling back to streaming logs: unable to upgrade connection: container dnstest not found in pod dnstest_default
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	web.default.svc.cluster.local
+Address: 10.108.119.230
+# exit 0

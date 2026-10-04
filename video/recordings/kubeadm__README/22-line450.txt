@@ -1,0 +1,5 @@
+# on k8s-cp
+sudo kubeadm token create --print-join-command
+---
+kubeadm join 10.97.7.168:6443 --token <bootstrap-token> --discovery-token-ca-cert-hash sha256:a111e83695ca381b197dee40eb2fdc87bc6dee3db926ee8e94cc6be2c481522e 
+# exit 0

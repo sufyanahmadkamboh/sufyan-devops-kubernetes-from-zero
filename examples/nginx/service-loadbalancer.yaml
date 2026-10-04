@@ -1,0 +1,16 @@
+# Amazon EKS: AWS creates an internet-facing load balancer for this Service.
+# It costs money while it exists: delete this Service BEFORE deleting the cluster.
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  type: LoadBalancer
+  selector:
+    app: web
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

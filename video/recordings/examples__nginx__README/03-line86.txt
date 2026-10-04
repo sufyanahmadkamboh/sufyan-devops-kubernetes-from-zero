@@ -1,0 +1,5 @@
+kubectl delete -f examples/nginx/ --ignore-not-found
+---
+deployment.apps "web" deleted from default namespace
+service "web" deleted from default namespace
+# exit 0

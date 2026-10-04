@@ -1,0 +1,10 @@
+# on k8s-cp+k8s-worker
+sudo swapoff -a
+sudo sed -i '/\sswap\s/ s/^/#/' /etc/fstab
+swapon --show
+---
+[k8s-cp]
+
+[k8s-worker]
+
+# exit 0

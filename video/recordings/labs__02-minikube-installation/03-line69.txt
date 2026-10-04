@@ -1,0 +1,6 @@
+kubectl config current-context
+kubectl version | grep Server
+---
+prod-like
+Server Version: v1.36.0
+# exit 0

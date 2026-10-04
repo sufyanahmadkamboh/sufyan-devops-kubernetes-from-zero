@@ -1,0 +1,4 @@
+docker ps -a --filter name=minikube --format '{{.Names}}' | grep -q . && echo "still there" || echo "no Kubernetes containers left"
+---
+no Kubernetes containers left
+# exit 0

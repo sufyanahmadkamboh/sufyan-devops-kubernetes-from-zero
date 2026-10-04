@@ -1,0 +1,6 @@
+# on k8s-micro
+sudo usermod -a -G microk8s "$USER"
+mkdir -p ~/.kube && chmod 0700 ~/.kube
+---
+
+# exit 0

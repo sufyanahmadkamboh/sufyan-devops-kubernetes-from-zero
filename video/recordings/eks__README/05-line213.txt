@@ -1,0 +1,4 @@
+kubectl config current-context
+---
+<iam-user>@k8s-from-zero.eu-central-1.eksctl.io
+# exit 0

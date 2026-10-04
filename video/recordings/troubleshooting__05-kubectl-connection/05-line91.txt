@@ -1,0 +1,12 @@
+# on k8s-cp
+kubectl config view --minify --kubeconfig /tmp/broken-config | grep -E 'server:|cluster:|user:|current-context'
+kubectl config view --minify | grep -E 'server:'
+---
+- cluster:
+    server: https://10.255.255.1:6443
+    cluster: kubernetes
+    user: kubernetes-admin
+current-context: kubernetes-admin@kubernetes
+  user:
+    server: https://10.97.7.168:6443
+# exit 0

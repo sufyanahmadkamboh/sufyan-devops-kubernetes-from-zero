@@ -1,0 +1,4 @@
+docker version --format 'Client {{.Client.Version}} · Server {{.Server.Version}}'
+---
+Client 28.0.4 · Server 28.0.4
+# exit 0

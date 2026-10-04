@@ -1,0 +1,28 @@
+eksctl delete cluster -f eks/cluster.yaml --wait
+---
+2026-10-04 15:57:23 [ℹ]  deleting EKS cluster "k8s-from-zero"
+2026-10-04 15:57:24 [ℹ]  will drain 0 unmanaged nodegroup(s) in cluster "k8s-from-zero"
+2026-10-04 15:57:24 [ℹ]  deleted 0 Fargate profile(s)
+2026-10-04 15:57:24 [✔]  kubeconfig has been updated
+2026-10-04 15:57:24 [ℹ]  cleaning up AWS load balancers created by Kubernetes objects of Kind Service, Ingress, or Gateway
+2026-10-04 15:57:25 [ℹ]  
+2 sequential tasks: { delete nodegroup "workers", delete cluster control plane "k8s-from-zero" 
+}
+2026-10-04 15:57:25 [ℹ]  will delete stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:57:25 [ℹ]  waiting for stack "eksctl-k8s-from-zero-nodegroup-workers" to get deleted
+2026-10-04 15:57:25 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:57:55 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:58:48 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 15:59:59 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 16:01:35 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 16:02:48 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 16:04:23 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 16:05:56 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-nodegroup-workers"
+2026-10-04 16:05:56 [ℹ]  will delete stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 16:05:56 [ℹ]  waiting for stack "eksctl-k8s-from-zero-cluster" to get deleted
+2026-10-04 16:05:56 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 16:06:26 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 16:07:23 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 16:08:37 [ℹ]  waiting for CloudFormation stack "eksctl-k8s-from-zero-cluster"
+2026-10-04 16:08:38 [✔]  all cluster resources were deleted
+# exit 0

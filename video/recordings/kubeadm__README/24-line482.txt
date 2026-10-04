@@ -1,0 +1,9 @@
+# on k8s-cp
+kubectl wait --for=condition=Ready node/k8s-worker --timeout=10s
+kubectl get nodes -o wide
+---
+node/k8s-worker condition met
+NAME         STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION              CONTAINER-RUNTIME
+k8s-cp       Ready    control-plane   46s   v1.37.1   10.97.7.168   <none>        Ubuntu 24.04.5 LTS   6.8.0-142-generic (amd64)   containerd://2.3.6
+k8s-worker   Ready    <none>          10s   v1.37.1   10.97.7.171   <none>        Ubuntu 24.04.5 LTS   6.8.0-142-generic (amd64)   containerd://2.3.6
+# exit 0

@@ -1,0 +1,14 @@
+# on k8s-cp
+kubectl rollout status deployment/web --timeout=10s
+kubectl get deployment web
+kubectl get pods -l app=web -o wide
+---
+Waiting for deployment "web" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web" successfully rolled out
+NAME   READY   UP-TO-DATE   AVAILABLE   AGE
+web    2/2     2            2           5s
+NAME                   READY   STATUS    RESTARTS   AGE   IP           NODE         NOMINATED NODE   READINESS GATES
+web-6f5d6d9c94-2zks8   1/1     Running   0          5s    10.244.1.3   k8s-worker   <none>           <none>
+web-6f5d6d9c94-fl5c7   1/1     Running   0          5s    10.244.1.2   k8s-worker   <none>           <none>
+# exit 0

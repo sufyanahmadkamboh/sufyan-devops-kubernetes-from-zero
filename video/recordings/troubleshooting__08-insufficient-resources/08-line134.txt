@@ -1,0 +1,4 @@
+kubectl get deployment hungry -o jsonpath='{.spec.template.spec.containers[0].resources.requests}{"\n"}'
+---
+{"cpu":"300","memory":"128Mi"}
+# exit 0

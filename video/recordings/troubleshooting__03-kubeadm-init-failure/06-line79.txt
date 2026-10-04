@@ -1,0 +1,5 @@
+# on k8s-lab
+grep -n 'disabled_plugins' /etc/containerd/config.toml
+---
+15:disabled_plugins = ["cri"]
+# exit 0

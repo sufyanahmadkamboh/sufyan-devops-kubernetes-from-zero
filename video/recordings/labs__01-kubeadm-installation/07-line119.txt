@@ -1,0 +1,15 @@
+# on k8s-cp
+kubectl delete deployment capacity
+kubectl drain k8s-worker2 --ignore-daemonsets --delete-emptydir-data --force --timeout=120s
+kubectl delete node k8s-worker2
+---
+deployment.apps "capacity" deleted from default namespace
+node/k8s-worker2 cordoned
+Warning: ignoring DaemonSet-managed Pods: kube-flannel/kube-flannel-ds-6tp4z, kube-system/kube-proxy-hgmvk
+evicting pod default/capacity-5d78bb8dcd-gt49p
+evicting pod default/capacity-5d78bb8dcd-ckzbh
+pod/capacity-5d78bb8dcd-ckzbh evicted
+pod/capacity-5d78bb8dcd-gt49p evicted
+node/k8s-worker2 drained
+node "k8s-worker2" deleted
+# exit 0

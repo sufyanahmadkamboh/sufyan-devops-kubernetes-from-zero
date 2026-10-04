@@ -1,0 +1,6 @@
+# on k8s-worker
+sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock ps
+---
+time="2026-10-04T14:52:59Z" level=warning msg="Config \"/etc/crictl.yaml\" does not exist, trying next: \"/usr/bin/crictl.yaml\""
+time="2026-10-04T14:53:03Z" level=error msg="validate service connection: validate CRI v1 runtime API for endpoint \"unix:///run/containerd/containerd.sock\": rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+# exit 1

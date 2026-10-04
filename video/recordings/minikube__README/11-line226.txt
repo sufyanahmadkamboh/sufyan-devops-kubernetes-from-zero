@@ -1,0 +1,8 @@
+minikube ssh -- sudo crictl ps --name 'kube-' -o table
+---
+CONTAINER           IMAGE               CREATED             STATE               NAME                      ATTEMPT             POD ID              POD                                NAMESPACE
+a98e08dc09f34       d6a28daf3e6b0       14 seconds ago      Running             kube-proxy                0                   2354edf1bf9fc       kube-proxy-dpftw                   kube-system
+f1a93dcfdeab2       bec5f0e1e2eeb       24 seconds ago      Running             kube-apiserver            0                   4e695cd28c66c       kube-apiserver-minikube            kube-system
+b0a86b760a6e9       364b3c3d9ec19       24 seconds ago      Running             kube-controller-manager   0                   a7677388e46d2       kube-controller-manager-minikube   kube-system
+5962391319f3e       1fabf80a1273a       24 seconds ago      Running             kube-scheduler            0                   04fa3fb40573e       kube-scheduler-minikube            kube-system
+# exit 0

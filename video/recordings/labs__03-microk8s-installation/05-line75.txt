@@ -1,0 +1,6 @@
+# on k8s-micro
+kubectl get ingress web
+---
+NAME   CLASS    HOSTS       ADDRESS   PORTS   AGE
+web    public   web.local             80      1s
+# exit 0

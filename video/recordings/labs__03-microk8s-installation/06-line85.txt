@@ -1,0 +1,5 @@
+# on k8s-micro
+curl -s -H 'Host: web.local' http://127.0.0.1/ | grep -o '<title>.*</title>'
+---
+<title>Welcome to nginx!</title>
+# exit 0

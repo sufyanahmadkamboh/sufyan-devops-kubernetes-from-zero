@@ -1,0 +1,8 @@
+# on k8s-lab
+sudo kubeadm init phase preflight
+---
+[preflight] Running pre-flight checks
+[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] This might take a minute or two, depending on the speed of your internet connection
+[preflight] You can also perform this action beforehand using 'kubeadm config images pull'
+# exit 0

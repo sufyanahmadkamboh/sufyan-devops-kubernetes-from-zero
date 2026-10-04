@@ -1,0 +1,8 @@
+# on k8s-cp+k8s-worker
+sudo ufw status
+---
+[k8s-cp]
+Status: inactive
+[k8s-worker]
+Status: inactive
+# exit 0

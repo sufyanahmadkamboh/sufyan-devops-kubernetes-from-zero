@@ -1,0 +1,7 @@
+# on k8s-cp
+kubectl create deployment capacity --image=nginx:1.30-alpine --replicas=2
+kubectl patch deployment capacity -p '{"spec":{"template":{"spec":{"nodeSelector":{"kubernetes.io/hostname":"k8s-worker2"}}}}}'
+---
+deployment.apps/capacity created
+deployment.apps/capacity patched
+# exit 0

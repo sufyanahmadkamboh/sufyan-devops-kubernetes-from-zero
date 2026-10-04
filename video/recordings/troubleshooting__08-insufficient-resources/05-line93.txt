@@ -1,0 +1,5 @@
+kubectl get pods -l app=hungry
+---
+NAME                     READY   STATUS    RESTARTS   AGE
+hungry-84d6875cb-5mjwf   0/1     Pending   0          0s
+# exit 0

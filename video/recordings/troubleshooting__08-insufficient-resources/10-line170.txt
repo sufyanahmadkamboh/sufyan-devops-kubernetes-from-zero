@@ -1,0 +1,10 @@
+kubectl rollout status deployment hungry --timeout=10s
+kubectl get pods -l app=hungry -o wide
+---
+Waiting for deployment "hungry" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "hungry" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "hungry" rollout to finish: 1 old replicas are pending termination...
+deployment "hungry" successfully rolled out
+NAME                      READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES
+hungry-68c5c87485-z8fl7   1/1     Running   0          0s    10.244.0.6   minikube   <none>           <none>
+# exit 0

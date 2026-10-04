@@ -1,0 +1,13 @@
+# on k8s-cp
+kubectl describe node k8s-worker | sed -n '/Conditions:/,/Addresses:/p'
+---
+Conditions:
+  Type                 Status    LastHeartbeatTime                 LastTransitionTime                Reason              Message
+  ----                 ------    -----------------                 ------------------                ------              -------
+  NetworkUnavailable   False     Sun, 04 Oct 2026 14:46:58 +0000   Sun, 04 Oct 2026 14:46:58 +0000   FlannelIsUp         Flannel is running on this node
+  MemoryPressure       Unknown   Sun, 04 Oct 2026 14:46:56 +0000   Sun, 04 Oct 2026 14:47:48 +0000   NodeStatusUnknown   Kubelet stopped posting node status.
+  DiskPressure         Unknown   Sun, 04 Oct 2026 14:46:56 +0000   Sun, 04 Oct 2026 14:47:48 +0000   NodeStatusUnknown   Kubelet stopped posting node status.
+  PIDPressure          Unknown   Sun, 04 Oct 2026 14:46:56 +0000   Sun, 04 Oct 2026 14:47:48 +0000   NodeStatusUnknown   Kubelet stopped posting node status.
+  Ready                Unknown   Sun, 04 Oct 2026 14:46:56 +0000   Sun, 04 Oct 2026 14:47:48 +0000   NodeStatusUnknown   Kubelet stopped posting node status.
+Addresses:
+# exit 0

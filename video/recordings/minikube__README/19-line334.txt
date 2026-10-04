@@ -1,0 +1,13 @@
+kubectl --context multinode get nodes
+minikube profile list
+---
+NAME            STATUS   ROLES           AGE   VERSION
+multinode       Ready    control-plane   32s   v1.37.0
+multinode-m02   Ready    <none>          16s   v1.37.0
+┌───────────┬────────┬────────────┬──────────────┬─────────┬────────┬───────┬────────────────┬────────────────────┐
+│  PROFILE  │ DRIVER │  RUNTIME   │      IP      │ VERSION │ STATUS │ NODES │ ACTIVE PROFILE │ ACTIVE KUBECONTEXT │
+├───────────┼────────┼────────────┼──────────────┼─────────┼────────┼───────┼────────────────┼────────────────────┤
+│ minikube  │ docker │ containerd │ 192.168.49.2 │ v1.37.0 │ OK     │ 1     │ *              │                    │
+│ multinode │ docker │ containerd │ 192.168.58.2 │ v1.37.0 │ OK     │ 2     │                │ *                  │
+└───────────┴────────┴────────────┴──────────────┴─────────┴────────┴───────┴────────────────┴────────────────────┘
+# exit 0

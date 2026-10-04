@@ -1,0 +1,4 @@
+multipass launch 24.04 --name k8s-worker2 --cpus 2 --memory 2G --disk 15G
+---
+Launched: k8s-worker2
+# exit 0

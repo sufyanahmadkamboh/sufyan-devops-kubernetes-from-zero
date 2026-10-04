@@ -1,0 +1,13 @@
+eksctl create cluster -f eks/cluster.yaml --dry-run | grep -E 'name:|region:|version:|instanceType:|desiredCapacity:|gateway:'
+---
+  desiredCapacity: 2
+  instanceType: t3.medium
+    alpha.eksctl.io/cluster-name: k8s-from-zero
+    alpha.eksctl.io/nodegroup-name: workers
+  name: workers
+    alpha.eksctl.io/nodegroup-name: workers
+  name: k8s-from-zero
+  region: eu-central-1
+  version: "1.37"
+    gateway: Single
+# exit 0

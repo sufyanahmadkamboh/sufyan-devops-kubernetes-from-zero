@@ -1,0 +1,11 @@
+# on k8s-cp+k8s-worker
+containerd config default | sudo tee /etc/containerd/config.toml > /dev/null
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+grep -n 'SystemdCgroup' /etc/containerd/config.toml
+sudo systemctl restart containerd
+---
+[k8s-cp]
+90:            SystemdCgroup = true
+[k8s-worker]
+90:            SystemdCgroup = true
+# exit 0

@@ -1,0 +1,7 @@
+# three faults at once
+multipass exec k8s-worker -- sudo systemctl stop containerd
+multipass exec k8s-worker -- sudo sysctl -w net.ipv4.ip_forward=0
+multipass exec k8s-cp -- bash -c 'cp ~/.kube/config ~/.kube/config.bak && sed -i "s#server: https://.*:6443#server: https://10.255.255.1:6443#" ~/.kube/config'
+---
+net.ipv4.ip_forward = 0
+# exit 0

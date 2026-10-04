@@ -1,0 +1,15 @@
+# on k8s-cp+k8s-worker
+lsmod | grep -E '^(overlay|br_netfilter)'
+sysctl net.ipv4.ip_forward net.bridge.bridge-nf-call-iptables
+---
+[k8s-cp]
+br_netfilter           32768  0
+overlay               212992  0
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-iptables = 1
+[k8s-worker]
+br_netfilter           32768  0
+overlay               212992  0
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-iptables = 1
+# exit 0

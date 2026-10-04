@@ -1,0 +1,5 @@
+# on k8s-micro
+groups
+---
+ubuntu adm cdrom sudo dip lxd microk8s
+# exit 0

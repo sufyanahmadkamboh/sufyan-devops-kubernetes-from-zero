@@ -1,0 +1,8 @@
+minikube start -p tiny --driver=docker --memory=1000mb
+---
+* [tiny] minikube v1.39.0 on Ubuntu 24.04
+  - MINIKUBE_IN_STYLE=false
+* Using the docker driver based on user configuration
+
+X Exiting due to RSRC_INSUFFICIENT_REQ_MEMORY: Requested memory allocation 1000MiB is less than the usable minimum of 1800MB
+# exit 23

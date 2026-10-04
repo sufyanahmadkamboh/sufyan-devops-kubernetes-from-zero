@@ -1,0 +1,7 @@
+URL=$(minikube service web --url)
+echo "$URL"
+curl -s "$URL" | grep -o '<title>.*</title>'
+---
+http://192.168.49.2:31773
+<title>Welcome to nginx!</title>
+# exit 0
