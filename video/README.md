@@ -1,5 +1,7 @@
 # Video course
 
+> The YouTube upload package (`youtube/`) is written by the build and kept locally; it is not published in this repository.
+
 A narrated walkthrough of this repository in **18 chapters**, built from code. **Every terminal in the video shows real
 output**: the kubeadm, Minikube and MicroK8s lessons and the troubleshooting labs were recorded while CI ran them on
 fresh virtual machines (`tests/mdrun.py --record`), and the EKS lesson while it ran against AWS. The AWS Console

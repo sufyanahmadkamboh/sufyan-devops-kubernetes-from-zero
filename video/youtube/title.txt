@@ -1,5 +1,0 @@
-Kubernetes From Zero: Install It 4 Ways (kubeadm, Minikube, MicroK8s, EKS), Break It, Fix It | Hands-On
-
-Alternatives (A/B test with YouTube "Test & compare"):
-Install Kubernetes 4 Ways and Troubleshoot 8 Real Failures (Beginner Course, Real Output)
-kubeadm vs Minikube vs MicroK8s vs EKS: Build, Verify, Break and Clean Up Every Cluster
